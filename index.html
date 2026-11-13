@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f3d2a">
+<title>Luminária Encanto de Natal Premium · Projetor com Luzes LED</title>
+<link rel="icon" type="image/png" sizes="32x32" href="./img/icone-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./img/icone-180.png">
+<!-- Ao publicar, troque "./" pelo endereço completo do site (ex.: https://sualoja.com/),
+     o WhatsApp e o Facebook só leem imagem com URL absoluta. -->
+<meta property="og:title" content="Luminária Encanto de Natal Premium · Projetor com Luzes LED">
+<meta property="og:description" content="Encaixe, apague a luz e o teto vira um céu de Natal.">
+<meta property="og:type" content="product">
+<meta property="og:image" content="./img/logo-loja-og.jpg">
+<meta name="description" content="Encaixe, acenda e veja o teto virar um céu de Natal: Papai Noel, árvores, estrelas e flocos de neve projetados pela casa. Árvore e guirlanda com luzinhas LED.">
+<link rel="preload" as="image" href="./img/vitrine-capa.webp">
+<link rel="preload" as="font" type="font/woff2" href="./fonts/playfair-display-latin-600-normal.woff2" crossorigin>
+<link rel="stylesheet" href="./css/fontes.css">
+<link rel="stylesheet" href="./css/botoes.css">
+<link rel="stylesheet" href="./css/sacola.css">
+<style>
+/* ============================================================
+   ENCANTO DE NATAL — Árvore Projetora
+   Mesmo funil da página da escova, nova paleta e temática.
+   Layout MOBILE FIRST. Página 100% independente:
+   sem iframe, sem CDN, sem fontes externas.
+
+   >>> PARA TROCAR NOME / PREÇO / LINK: veja o bloco CONFIG
+       no <script> do final da página.
+   ============================================================ */
+
+:root{
+  --bg:#fbf6ee;          /* creme "papel de presente" */
+  --paper:#ffffff;
+  --ink:#16241c;         /* verde quase preto */
+  --muted:#5f6b63;
+  --pine:#0f3d2a;        /* verde pinheiro */
+  --pine-2:#17573c;
+  --night:#0b2219;       /* noite de Natal */
+  --red:#c0182f;         /* cranberry */
+  --red-dark:#8e0f22;
+  --gold:#d6a645;
+  --gold-soft:#f7ecd2;
+  --mint:#eaf3ec;
+  --green-ok:#1d7f4b;
+  --border:#eadfcd;
+  --shadow:0 14px 40px rgba(15,61,42,.12);
+  --radius:20px;
+  --max:1180px;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;   /* css/fontes.css */
+  --bar:calc(72px + env(safe-area-inset-bottom, 0px)); /* altura da barra fixa */
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:rgba(192,24,47,.12)}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:108px}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.55;
+  font-size:16px;
+  overflow-x:hidden;
+  padding-bottom:var(--bar); /* espaço para a barra fixa de compra */
+}
+img,video{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+button{font:inherit;color:inherit}
+h1,h2,h3,h4{margin:0}
+h1,h2{font-family:var(--serif);font-weight:600}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+/* --- MOBILE: container --------------------------------------- */
+.wrap{width:100%;padding:0 18px;margin:0 auto;max-width:var(--max)}
+section{padding:52px 0}
+
+/* --- Topo ----------------------------------------------------- */
+.announcement{
+  background:var(--red);color:#fff;text-align:center;
+  padding:7px 12px;font-weight:800;font-size:12px;line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+/* celular: some "para todo o Brasil" para caber em uma linha */
+@media (max-width:560px){.announcement .so-desk{display:none}}
+@media (min-width:700px){.announcement{padding:9px 16px;font-size:13px}}
+.announcement b{color:var(--gold-soft)}
+
+/* Topo em verde sólido, fixo na rolagem. */
+.brandbar{
+  background:var(--pine);border-bottom:3px solid var(--gold);
+  padding:8px 0;display:flex;justify-content:center;
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 6px 18px rgba(11,34,25,.18)
+}
+/* Logo com fundo transparente: o dourado brilha sobre o verde. */
+.logo{height:64px;width:auto;position:relative;z-index:2}
+.logo-footer{height:96px;width:auto}
+
+/* --- Pisca-pisca pendurado na linha dourada -----------------
+   Fio trançado e presilhas douradas: SVG gerado pelo JS (muda o
+   espaçamento entre celular e desktop). Cada lâmpada tem soquete
+   com ranhuras, vidro com reflexo e um halo de luz; o ritmo do
+   pisca é sorteado por lâmpada para parecer pisca-pisca de verdade. */
+.piscas{
+  position:absolute;left:0;right:0;bottom:-44px;height:46px;
+  overflow:hidden;pointer-events:none;z-index:1;
+  background-repeat:repeat-x;background-position:0 0
+}
+.lamp{
+  position:absolute;top:9px;width:12px;height:30px;
+  transform-origin:6px 0;transform:rotate(var(--r,0deg))
+}
+/* soquete com ranhuras */
+.lamp:before{
+  content:"";position:absolute;left:3px;top:0;width:6px;height:7px;z-index:2;
+  border-radius:1.5px 1.5px 1px 1px;
+  background:repeating-linear-gradient(180deg,#2b4234 0 1.4px,#0c1811 1.4px 2.4px);
+  box-shadow:inset 1px 0 0 rgba(255,255,255,.14)
+}
+/* vidro */
+.vidro{
+  position:absolute;left:.5px;top:6px;width:11px;height:16px;z-index:1;
+  border-radius:50% 50% 50% 50% / 40% 40% 60% 60%;
+  background:
+    radial-gradient(ellipse 28% 20% at 33% 27%, rgba(255,255,255,.95), rgba(255,255,255,0)),
+    radial-gradient(ellipse 62% 56% at 50% 62%, var(--hot) 0%, var(--c) 52%, var(--deep) 100%);
+  box-shadow:0 0 5px 1px var(--c), inset 0 -2px 3px rgba(0,0,0,.22);
+  animation:vidro var(--d,2.4s) ease-in-out var(--atraso,0s) infinite
+}
+/* halo de luz em volta */
+.lamp:after{
+  content:"";position:absolute;left:-13px;top:-5px;width:38px;height:38px;z-index:0;
+  border-radius:50%;
+  background:radial-gradient(circle, var(--glow) 0%, transparent 66%);
+  animation:halo var(--d,2.4s) ease-in-out var(--atraso,0s) infinite
+}
+@keyframes vidro{0%,38%,72%,100%{opacity:1} 55%{opacity:.5}}
+@keyframes halo {0%,38%,72%,100%{opacity:1} 55%{opacity:.06}}
+@media (prefers-reduced-motion:reduce){.vidro,.lamp:after{animation:none}}
+
+/* --- Botões: estilo em css/botoes.css (igual em todas as páginas) --- */
+
+/* --- Hero = vitrine do produto ---------------------------------
+   O produto aparece logo de cara: galeria deslizável (arrasta no
+   celular, setas e miniaturas no desktop) e, ao lado, nome, preço
+   e botão de compra. Mobile: galeria -> nome -> preço -> botão. */
+.hero{
+  padding:14px 0 34px;position:relative;overflow:hidden;overflow:clip;
+  background:
+    radial-gradient(120% 60% at 50% 0%, #fff 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(circle at 8% 30%, rgba(192,24,47,.07), transparent 32%),
+    radial-gradient(circle at 92% 70%, rgba(15,61,42,.08), transparent 34%)
+}
+/* Neve caindo: pontinhos em CSS puro, bem discretos. */
+.hero:before{
+  content:"";position:absolute;inset:-200px 0 0 0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, rgba(214,166,69,.45), transparent 60%),
+    radial-gradient(2px 2px at 120px 80px, rgba(15,61,42,.18), transparent 60%),
+    radial-gradient(2.5px 2.5px at 200px 150px, rgba(192,24,47,.16), transparent 60%);
+  background-size:240px 220px;
+  animation:neve 22s linear infinite
+}
+@keyframes neve{to{transform:translateY(200px)}}
+@media (prefers-reduced-motion:reduce){.hero:before{animation:none}}
+
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;position:relative;z-index:1}
+
+/* Galeria */
+.galeria{min-width:0}
+.palco{
+  position:relative;border-radius:22px;overflow:hidden;
+  background:var(--night);
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 24px 50px -24px rgba(11,34,25,.45), 0 0 0 1px rgba(214,166,69,.35)
+}
+.slides{
+  display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;scrollbar-width:none;overscroll-behavior-x:contain
+}
+.slides::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;margin:0;position:relative;scroll-snap-align:center;scroll-snap-stop:always}
+.slide img,.slide video{width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center 40%}
+.slide figcaption{
+  position:absolute;left:12px;bottom:12px;
+  background:rgba(11,34,25,.78);color:#fff;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid rgba(214,166,69,.45);border-radius:999px;
+  padding:6px 12px;font-size:12px;font-weight:700;letter-spacing:.01em
+}
+.selo-off{
+  position:absolute;top:12px;left:12px;z-index:2;
+  background:var(--red);color:#fff;font-weight:900;font-size:12px;letter-spacing:.04em;
+  padding:7px 11px;border-radius:999px;box-shadow:0 8px 18px -6px rgba(192,24,47,.6)
+}
+.contador{
+  position:absolute;top:12px;right:12px;z-index:2;
+  background:rgba(255,255,255,.92);color:var(--ink);
+  font-size:11.5px;font-weight:800;padding:5px 10px;border-radius:999px;
+  font-variant-numeric:tabular-nums
+}
+.seta-gal{
+  position:absolute;top:50%;z-index:2;transform:translateY(-50%);
+  width:42px;height:42px;border-radius:50%;border:0;cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.94);color:var(--ink);
+  box-shadow:0 8px 20px -6px rgba(0,0,0,.4);transition:transform .15s ease
+}
+.seta-gal:hover{transform:translateY(-50%) scale(1.06)}
+.seta-gal.ant{left:14px}.seta-gal.prox{right:14px}
+.seta-gal svg{width:18px;height:18px}
+
+.thumbs{
+  display:flex;gap:8px;margin-top:10px;
+  overflow-x:auto;scrollbar-width:none;padding:2px
+}
+.thumbs::-webkit-scrollbar{display:none}
+.thumb{
+  flex:0 0 62px;width:62px;height:62px;padding:0;cursor:pointer;
+  border:0;border-radius:12px;overflow:hidden;background:#fff;
+  box-shadow:0 0 0 1px var(--border);opacity:.62;
+  transition:opacity .2s ease, box-shadow .2s ease;
+  appearance:none;-webkit-appearance:none
+}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb[aria-current="true"]{opacity:1;box-shadow:0 0 0 2px var(--pine), 0 0 0 4px var(--gold-soft)}
+@media (hover:hover){.thumb:hover{opacity:1}}
+
+/* Bloco de compra */
+.compra{min-width:0}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;color:var(--red)
+}
+.dot{width:7px;height:7px;border-radius:99px;background:var(--red);box-shadow:0 0 0 4px rgba(192,24,47,.14)}
+
+h1{
+  font-size:clamp(30px,7.6vw,38px);
+  line-height:1.06;letter-spacing:-.02em;text-wrap:balance;
+  margin:10px 0 10px
+}
+h1 small{
+  display:block;margin-top:6px;
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif;
+  font-size:.42em;font-weight:700;letter-spacing:.01em;color:var(--muted)
+}
+h1 em,.destaque-em{font-style:italic;color:var(--red)}
+.hero-sub{font-size:15.5px;color:#4a564e;margin:0 0 16px;max-width:560px}
+.hero-sub em{font-family:var(--serif);font-style:italic;color:var(--pine);font-size:1.08em}
+
+.bullet-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.pill{
+  background:#fff;border:1px solid var(--border);
+  padding:8px 12px;border-radius:999px;font-size:13px;font-weight:700;color:var(--ink)
+}
+
+.destaques{list-style:none;padding:0;margin:0 0 18px;display:grid;gap:9px}
+.destaques li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;font-weight:600;color:var(--ink)}
+.destaques svg{flex:0 0 20px;width:20px;height:20px;color:var(--pine-2);margin-top:1px}
+
+.offer-card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px;box-shadow:0 1px 0 #fff inset, 0 20px 44px -26px rgba(15,61,42,.35);
+  position:relative
+}
+.offer-card:before{
+  content:"";position:absolute;left:18px;right:18px;top:-1px;height:3px;border-radius:0 0 4px 4px;
+  background:linear-gradient(90deg,var(--red),var(--gold),var(--pine-2))
+}
+.price-line{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.price{font-size:36px;font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.old{text-decoration:line-through;color:#8f978f;font-weight:700;font-size:15px}
+.old[hidden],.discount[hidden],.selo-off[hidden]{display:none}
+.selo-bf{top:47px;left:12px}
+.discount{
+  background:#e3f4ea;color:#1d7f4b;border:1px solid #bfe3cc;
+  padding:5px 9px;border-radius:8px;font-weight:900;font-size:12px;letter-spacing:.03em
+}
+.pix{font-size:13px;color:var(--muted);font-weight:700;margin:8px 0 14px}
+.pix b{color:var(--ink)}
+.micro{
+  display:flex;justify-content:center;gap:6px 14px;flex-wrap:wrap;
+  margin-top:12px;color:#5f6b63;font-size:12px;font-weight:700
+}
+.micro span{display:inline-flex;align-items:center;gap:5px}
+.micro svg{width:14px;height:14px;color:var(--pine-2)}
+.aviso-natal{
+  display:flex;gap:10px;align-items:center;margin-top:12px;
+  background:var(--gold-soft);color:#6f4f12;border:1px solid #efdcb0;
+  padding:10px 12px;border-radius:12px;font-size:13px;font-weight:700
+}
+.aviso-natal svg{flex:0 0 18px;width:18px;height:18px}
+
+
+/* --- Selos de confiança (2x2 no mobile) ----------------------- */
+.trust-strip{padding:4px 18px 8px}
+.trust-strip .trust-grid{padding:0}
+@media (min-width:700px){.trust-strip{padding:4px 28px 8px}}
+.trust-grid{
+  display:grid;grid-template-columns:1fr 1fr;background:#fff;
+  border:1px solid var(--border);border-radius:16px;overflow:hidden
+}
+.trust-item{padding:14px;border-right:1px solid var(--border);display:flex;gap:10px;align-items:flex-start}
+.trust-item:nth-child(2n){border-right:0}
+.trust-item:nth-child(-n+2){border-bottom:1px solid var(--border)}
+.trust-item svg{flex:0 0 22px;width:22px;height:22px;color:var(--pine-2);margin-top:1px}
+.trust-item b{display:block;font-size:13px}
+.trust-item span{font-size:11.5px;color:var(--muted);line-height:1.3;display:block}
+
+/* --- Cabeçalho de seção --------------------------------------- */
+.section-head{text-align:center;max-width:790px;margin:0 auto 26px}
+.kicker{
+  font-size:11px;font-weight:900;text-transform:uppercase;
+  color:var(--red);letter-spacing:.11em
+}
+h2{font-size:clamp(27px,6.6vw,34px);line-height:1.12;letter-spacing:-.015em;margin:9px 0 10px}
+.section-head p{color:var(--muted);font-size:15px;margin:0}
+
+/* --- Problema x Solução --------------------------------------- */
+.problem-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.problem,.solution{border-radius:var(--radius);padding:22px;border:1px solid var(--border)}
+.problem{background:#fff}
+.solution{background:var(--pine);color:#fff;border-color:var(--pine)}
+.problem h3,.solution h3{font-size:21px;font-weight:600;letter-spacing:-.01em;margin:0 0 16px;font-family:var(--serif)}
+.checklist{display:grid;gap:12px}
+.check{display:flex;gap:11px;align-items:flex-start;font-size:14.5px}
+.check i{
+  width:22px;height:22px;flex:0 0 22px;border-radius:50%;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-style:normal;font-weight:900;font-size:11px
+}
+.problem .check i{background:#f6e3e5;color:var(--red-dark)}
+.solution .check i{background:var(--gold);color:var(--night)}
+.solution .check span{color:#d9e7de}
+
+/* --- Destaque com foto grande --------------------------------- */
+.destaque{padding:0 0 52px}
+.destaque-grid{display:flex;flex-direction:column;gap:22px}
+.destaque-img{
+  background:linear-gradient(150deg,#fff,var(--gold-soft));
+  border:1px solid var(--border);border-radius:24px;
+  padding:10px;box-shadow:var(--shadow)
+}
+.destaque-img img.destaque-gif{object-position:center 40%}
+.destaque-img img{
+  width:100%;border-radius:16px;
+  aspect-ratio:4/5;object-fit:cover;object-position:center top
+}
+.destaque-texto h2{margin:9px 0 12px}
+.destaque-texto p{color:var(--muted);font-size:15px;margin:0 0 18px}
+
+/* --- Veja funcionando (vídeo) --------------------------------- */
+.prova-section{padding:0 0 52px}
+.prova-head{margin-bottom:20px}
+.prova-card{
+  background:var(--night);color:#fff;border-radius:22px;
+  padding:16px;box-shadow:var(--shadow);max-width:760px;margin:0 auto;
+  display:flex;flex-direction:column;gap:18px;align-items:center
+}
+.video-box{
+  position:relative;width:100%;max-width:340px;aspect-ratio:9/16;
+  border-radius:16px;overflow:hidden;background:#000;
+  border:2px solid rgba(214,166,69,.55)
+}
+.video-box video,.video-box img{width:100%;height:100%;object-fit:cover}
+.video-som{
+  position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
+  border:0;cursor:pointer;white-space:nowrap;
+  padding:10px 18px;border-radius:999px;
+  background:rgba(255,255,255,.94);color:var(--red);
+  font:inherit;font-size:14px;font-weight:700;
+  box-shadow:0 0 0 6px rgba(255,255,255,.18);
+  appearance:none;-webkit-appearance:none
+}
+.video-som[hidden]{display:none}
+.video-lado{text-align:center;max-width:420px}
+.video-lado p{color:#cfe0d5;font-size:14.5px;margin:0 0 14px}
+.video-lado .bullet-row{justify-content:center}
+.video-lado .pill{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#fff}
+.prova-cta{width:100%;max-width:420px}
+
+/* --- Avaliações (deixe oculto até ter avaliações reais) ------- */
+.pv-topo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.pv-nota{font-size:30px;font-weight:900;line-height:1}
+.pv-estrelas{color:var(--gold);font-size:15px;letter-spacing:1px}
+.pv-dep{border-top:1px solid var(--border);padding-top:13px;margin-bottom:6px}
+.pv-dep p{margin:0;font-size:13.5px;line-height:1.5}
+
+/* --- Benefícios ----------------------------------------------- */
+.feature-section{background:#fff}
+
+/* carrossel genérico: "Como chega" e "Avaliações" */
+.chegada-section,.aval-section{padding-top:8px}
+.carrossel{position:relative;max-width:560px;margin:0 auto}
+.car-trilho{
+  display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;scrollbar-width:none;overscroll-behavior-x:contain;
+  border-radius:20px;box-shadow:var(--shadow), 0 0 0 1px rgba(214,166,69,.35)
+}
+.car-trilho::-webkit-scrollbar{display:none}
+.car-item{flex:0 0 100%;margin:0;position:relative;scroll-snap-align:center;scroll-snap-stop:always;background:#fff}
+.car-item img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.car-item figcaption{
+  position:absolute;left:12px;bottom:12px;
+  background:rgba(11,34,25,.78);color:#fff;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid rgba(214,166,69,.45);border-radius:999px;
+  padding:6px 12px;font-size:12.5px;font-weight:700
+}
+.car-seta{
+  position:absolute;top:50%;z-index:2;transform:translateY(-50%);
+  width:40px;height:40px;border-radius:50%;border:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.94);color:var(--ink);
+  box-shadow:0 8px 20px -6px rgba(0,0,0,.4);transition:transform .15s ease
+}
+.car-seta:hover{transform:translateY(-50%) scale(1.06)}
+.car-seta.ant{left:10px}.car-seta.prox{right:10px}
+.car-seta svg{width:18px;height:18px}
+.car-pontos{display:flex;justify-content:center;gap:7px;margin-top:14px}
+.car-pontos span{width:8px;height:8px;border-radius:999px;background:var(--border);transition:width .25s ease,background .25s ease}
+.car-pontos span.on{width:22px;background:var(--red)}
+/* card de avaliação */
+.aval-resumo{margin-top:6px !important}
+.aval-resumo .pv-estrelas{font-size:17px}
+.aval-item > img{aspect-ratio:1/1}
+/* balão de vidro claro sobre a parte de baixo da foto */
+.car-item figcaption.aval-texto{
+  left:8px;right:auto;bottom:8px;max-width:78%;
+  padding:6px 9px 7px;border-radius:12px;
+  background:rgba(255,255,255,.38);color:#111;
+  -webkit-backdrop-filter:blur(10px) saturate(1.5);backdrop-filter:blur(10px) saturate(1.5);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 8px 20px -10px rgba(0,0,0,.35);
+  font-weight:400;overflow:hidden;text-shadow:0 0 6px rgba(255,255,255,.7)
+}
+/* brilho ("flash") que passa pelo balão */
+.aval-texto::after{
+  content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+  transform:skewX(-18deg);animation:aval-flash 4s ease-in-out infinite;pointer-events:none
+}
+.car-item figcaption.aval-texto.no-topo{top:8px;bottom:auto}
+@keyframes aval-flash{0%,55%{left:-60%}85%,100%{left:130%}}
+@media (prefers-reduced-motion:reduce){.aval-texto::after{display:none}}
+.aval-quem{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.aval-quem img{width:26px;height:26px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 2px var(--gold)}
+.aval-quem b{display:block;font-size:12px;line-height:1.2;color:#111}
+.aval-quem .pv-estrelas{display:block;font-size:9.5px;letter-spacing:.5px;line-height:1.2}
+.aval-texto p{
+  margin:0;color:#111;font-size:11.5px;line-height:1.35;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden
+}
+.features{display:grid;grid-template-columns:1fr;gap:12px}
+.feature{
+  background:var(--bg);border:1px solid var(--border);
+  padding:20px;border-radius:16px;position:relative
+}
+.feature:before{
+  content:"";position:absolute;left:20px;right:20px;top:-1px;height:3px;border-radius:0 0 4px 4px;
+  background:linear-gradient(90deg,var(--red),var(--gold),var(--pine-2))
+}
+.feature .icon{
+  width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  background:var(--pine);color:var(--gold);box-shadow:inset 0 0 0 1px rgba(214,166,69,.45)
+}
+.feature .icon svg{display:block}
+.feature h3{font-size:18px;margin:10px 0 6px}
+.feature p{margin:0;color:var(--muted);font-size:14.5px}
+
+/* --- Chamada do meio da pagina --------------------------------- */
+.cta-band{
+  padding:40px 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(214,166,69,.25), transparent 30%),
+    radial-gradient(circle at 85% 80%, rgba(192,24,47,.25), transparent 32%),
+    var(--pine)
+}
+.cta-band-inner{
+  max-width:560px;margin:0 auto;text-align:center;
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  padding:26px 20px;box-shadow:0 18px 50px rgba(0,0,0,.25);border-top:4px solid var(--gold)
+}
+.cta-band h2{font-size:clamp(23px,5.8vw,30px);margin:8px 0 6px}
+.cta-band-inner>p{color:var(--muted);font-size:14.5px;margin:0 0 16px}
+.cta-band-price{
+  display:flex;align-items:flex-end;justify-content:center;gap:10px;margin:0 0 16px
+}
+
+/* --- Como usar ------------------------------------------------ */
+.demo-grid{display:flex;flex-direction:column;gap:26px}
+.demo-img{
+  background:#fff;border:1px solid var(--border);border-radius:22px;
+  padding:10px;box-shadow:var(--shadow)
+}
+.demo-img img,.demo-img video{border-radius:16px;width:100%;aspect-ratio:4/5;object-fit:cover}
+.step{display:flex;gap:14px;margin:18px 0}
+.stepnum{
+  width:38px;height:38px;flex:0 0 38px;border-radius:12px;
+  background:var(--pine);border:2px solid var(--gold);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:15px
+}
+.step h4{margin:0 0 3px;font-size:16px}
+.step p{margin:0;color:var(--muted);font-size:14px}
+
+/* --- Galeria de ambientes ------------------------------------- */
+.ambientes{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:760px;margin:0 auto}
+.amb{
+  margin:0;background:#fff;border:1px solid var(--border);border-radius:18px;
+  padding:7px;box-shadow:var(--shadow)
+}
+.amb img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:13px}
+.amb figcaption{font-size:12.5px;font-weight:800;text-align:center;padding:8px 4px 3px}
+.amb.largo{grid-column:1 / -1}
+.amb.largo img{aspect-ratio:4/3}
+
+/* --- Ficha técnica -------------------------------------------- */
+.spec-box{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px;display:flex;flex-direction:column;gap:20px
+}
+.spec-box>img,.spec-box>video{border-radius:16px;width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center 40%}
+.spec-box h2{font-size:26px}
+.spec-list{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}
+.spec{padding:13px 15px;background:var(--bg);border-radius:12px;border-left:3px solid var(--gold)}
+.spec b{font-size:13px;display:block}
+.spec span{font-size:13px;color:var(--muted)}
+/* destaque do carregador portátil, abaixo da ficha */
+.spec-dica{
+  display:flex;gap:12px;align-items:flex-start;margin-top:12px;
+  padding:14px 16px;border-radius:14px;
+  background:var(--mint);border:1px solid #cfe5d6
+}
+.spec-dica-ico{
+  flex:none;width:36px;height:36px;border-radius:10px;background:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  box-shadow:0 0 0 1px #cfe5d6
+}
+.spec-dica p{margin:0;font-size:13.5px;line-height:1.5;color:var(--ink)}
+.spec-dica b{color:var(--pine)}
+
+/* --- Oferta --------------------------------------------------- */
+.offer-section{background:var(--night);color:#fff;position:relative;overflow:hidden}
+.offer-section:before,.offer-section:after{
+  content:"";position:absolute;border-radius:50%;filter:blur(10px)
+}
+.offer-section:before{width:320px;height:320px;background:rgba(192,24,47,.30);right:-120px;top:-120px}
+.offer-section:after{width:260px;height:260px;background:rgba(214,166,69,.18);left:-110px;bottom:-110px}
+.offer-grid{position:relative;z-index:1;display:flex;flex-direction:column;gap:26px}
+.offer-section .kicker{color:var(--gold)}
+.offer-section h2{margin-top:9px}
+.offer-section p{color:#cfe0d5;font-size:15px}
+.offer-panel{background:#fff;color:var(--ink);padding:20px;border-radius:22px;border-top:4px solid var(--gold)}
+.offer-name{font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.02em;margin-bottom:8px}
+.stock{
+  display:flex;gap:9px;align-items:center;background:var(--gold-soft);color:#7a5714;
+  padding:11px 12px;border-radius:11px;font-weight:800;font-size:13px;margin:12px 0 16px
+}
+.offer-note{
+  font-size:13px;color:var(--muted);font-weight:700;
+  text-align:center;margin:12px 0 0
+}
+
+/* --- FAQ ------------------------------------------------------ */
+.faq{max-width:860px;margin:auto}
+details{
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:0;margin-bottom:9px;overflow:hidden
+}
+summary{
+  cursor:pointer;font-weight:800;list-style:none;position:relative;
+  padding:17px 46px 17px 18px;font-size:15px;line-height:1.35
+}
+summary::-webkit-details-marker{display:none}
+summary:after{
+  content:"+";position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  font-size:24px;color:var(--red);font-weight:400;line-height:1
+}
+details[open] summary:after{content:"–"}
+details p{color:var(--muted);margin:0;padding:0 18px 18px;font-size:14px}
+
+/* --- Rodapé --------------------------------------------------- */
+footer{background:#071710;color:#9fb3a7;padding:30px 0;font-size:12.5px;border-top:3px solid var(--gold)}
+.footer-inner{
+  display:flex;flex-direction:column;align-items:center;
+  gap:14px;text-align:center
+}
+.footer-txt{display:flex;flex-direction:column;gap:7px}
+.footer-txt a{color:#e4efe8;text-decoration:none;font-weight:700}
+.footer-txt a:hover{text-decoration:underline}
+
+/* --- Barra fixa de compra (mobile) ---------------------------- */
+.sticky-mobile{
+  display:flex;position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,.95);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-top:1px solid var(--border);
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  gap:12px;align-items:center;
+  box-shadow:0 -6px 24px rgba(15,61,42,.10)
+}
+.sticky-price{min-width:86px;line-height:1.15}
+.sticky-price b{display:block;font-size:19px;font-weight:900;letter-spacing:-.02em}
+.sticky-price span{font-size:11px;color:var(--muted);text-decoration:line-through}
+.sticky-mobile .cta{min-height:50px;padding:13px 16px;font-size:14.5px;white-space:nowrap}
+
+/* ============================================================
+   TABLET  (>= 700px)
+   ============================================================ */
+@media (min-width:700px){
+  .wrap{padding:0 28px}
+  section{padding:70px 0}
+  .logo{height:76px}
+  .hero{padding:22px 0 44px}
+  .galeria{max-width:620px;width:100%;justify-self:center}
+  .compra{max-width:620px;width:100%;justify-self:center}
+  .slide img,.slide video{aspect-ratio:4/4}
+  .seta-gal{display:flex}
+  .thumb{flex-basis:72px;width:72px;height:72px}
+  .trust-grid{grid-template-columns:repeat(4,1fr)}
+  .trust-item{border-right:1px solid var(--border);padding:18px 20px}
+  .trust-item:nth-child(-n+2){border-bottom:0}
+  .trust-item:last-child{border-right:0}
+  .problem-grid{grid-template-columns:1fr 1fr;gap:18px}
+  .problem,.solution{padding:28px}
+  .features{grid-template-columns:1fr 1fr;gap:16px}
+  .feature{padding:24px}
+  .spec-list{grid-template-columns:1fr 1fr}
+  .ambientes{grid-template-columns:repeat(3,1fr);gap:14px}
+  .amb.largo{grid-column:auto}
+  .amb.largo img{aspect-ratio:3/4}
+  .prova-card{flex-direction:row;padding:26px;gap:28px;justify-content:center}
+  .video-lado{text-align:left}
+  .video-lado .bullet-row{justify-content:flex-start}
+  .footer-inner{flex-direction:row;justify-content:space-between;text-align:left}
+}
+
+/* ============================================================
+   DESKTOP  (>= 1000px)  — some a barra fixa, volta 2 colunas
+   ============================================================ */
+@media (min-width:1000px){
+  body{padding-bottom:0}
+  .sticky-mobile{display:none}
+  .logo{height:104px}
+  html{scroll-padding-top:148px}
+  section{padding:84px 0}
+  .hero{padding:40px 0 56px}
+  /* galeria à esquerda (miniaturas na vertical), compra à direita */
+  .hero-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);column-gap:56px;align-items:start}
+  .galeria,.compra{max-width:none}
+  .galeria{display:grid;grid-template-columns:76px minmax(0,1fr);gap:14px;position:sticky;top:150px}
+  .thumbs{flex-direction:column;margin:0;order:-1;overflow:visible}
+  .thumb{flex:0 0 auto;width:76px;height:76px}
+  .palco{border-radius:28px}
+  .slide img,.slide video{aspect-ratio:4/5}
+  .selo-off,.contador{top:18px}
+  .selo-off{left:18px}.contador{right:18px}
+  .selo-bf{top:53px;left:18px}
+  .slide figcaption{left:18px;bottom:18px}
+  .compra{padding-top:18px}
+  h1{font-size:clamp(40px,3.7vw,54px);margin:14px 0 14px}
+  .hero-sub{font-size:17.5px;margin-bottom:22px}
+  .destaques li{font-size:15.5px}
+  .offer-card{padding:24px}
+  .price{font-size:44px}
+  h2{font-size:clamp(34px,4.2vw,48px)}
+  .section-head{margin-bottom:42px}
+  .section-head p{font-size:18px}
+  .features{grid-template-columns:repeat(3,1fr);gap:18px}
+  .feature{min-height:200px;padding:26px}
+  .destaque{padding-bottom:84px}
+  .destaque-grid{
+    display:grid;grid-template-columns:.85fr 1.15fr;
+    gap:48px;align-items:center
+  }
+  .destaque-img{padding:16px;border-radius:30px}
+  .destaque-img img{border-radius:22px}
+  .demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center}
+  .demo-img{padding:18px;border-radius:28px}
+  .spec-box{
+    display:grid;grid-template-columns:.95fr 1.05fr;
+    gap:28px;align-items:center;padding:30px
+  }
+  .spec-box h2{font-size:40px}
+  .offer-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
+  .offer-section:before{width:460px;height:460px;right:-120px;top:-150px}
+  .offer-panel{padding:28px}
+  .prova-section{padding-bottom:84px}
+}
+</style>
+</head>
+<body>
+
+<div class="announcement">🎄 <span id="faltam"></span><b>Frete grátis</b><span class="so-desk"> para todo o Brasil</span></div>
+
+<header class="brandbar">
+  <img class="logo" src="./img/logo-encanto.webp" alt="Encanto de Natal" width="238" height="300">
+  <button type="button" class="carrinho-btn" onclick="abrirCarrinho()" aria-label="Abrir sacola">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M4.2 8h15.6l-1.25 11.6a2.2 2.2 0 0 1-2.19 1.9H7.64a2.2 2.2 0 0 1-2.19-1.9z"/>
+      <path d="M8.6 8V6.4a3.4 3.4 0 0 1 6.8 0V8"/>
+    </svg>
+    <span class="carrinho-contador" id="cartContador" hidden>0</span>
+  </button>
+  <div class="piscas" aria-hidden="true"></div>
+</header>
+
+<main>
+
+  <!-- ===== HERO: VITRINE DO PRODUTO ===== -->
+  <section class="hero" id="topo">
+    <div class="wrap hero-grid">
+
+      <!-- Galeria: arrasta no celular; setas e miniaturas no tablet/desktop.
+           A 1ª foto é o próprio produto, para a pessoa ver o que compra. -->
+      <div class="galeria">
+        <div class="palco">
+          <span class="selo-off" data-desconto-curto>R$ 50,00 OFF</span>
+          <span class="selo-bf" aria-label="Oferta de Black Friday">BLACK <b>FRIDAY</b></span>
+          <span class="contador" id="contadorFoto" aria-hidden="true">1/7</span>
+          <div class="slides" id="slides" tabindex="0" role="region" aria-roledescription="carrossel" aria-label="Fotos da Luminária Encanto de Natal Premium">
+            <figure class="slide">
+              <!-- MP4 em loop no lugar do GIF: 30 quadros/s (liso) e mais leve. -->
+              <video src="./video/vitrine.mp4" poster="./img/vitrine-capa.webp" autoplay muted loop playsinline preload="auto" style="object-position:center 18%"
+                     aria-label="Luminária Encanto de Natal Premium sendo encaixada na tomada, acendendo as luzinhas LED e projetando Papai Noel, árvores e estrelas no teto da sala"></video>
+              <figcaption>Encaixa e acende</figcaption>
+            </figure>
+            <figure class="slide">
+              <img src="./img/galeria-projecao-sala.webp" alt="Luminária Encanto de Natal Premium acesa na tomada da sala, projetando Papai Noel, renas, presentes, estrelas e flocos de neve no teto" width="900" height="1124" loading="lazy" decoding="async">
+              <figcaption>Projeção no teto</figcaption>
+            </figure>
+            <figure class="slide">
+              <img src="./img/galeria-detalhes.webp" alt="Detalhes da Luminária Encanto de Natal Premium: projetor no topo, luzinhas LED, bolinhas vermelhas, folhagem e conector USB" width="900" height="1124" loading="lazy" decoding="async">
+              <figcaption>Detalhes do produto</figcaption>
+            </figure>
+            <figure class="slide">
+              <img src="./img/galeria-maos-acesa.webp" alt="Luminária Encanto de Natal Premium nas mãos, com as luzinhas LED acesas e a estrela dourada no topo" width="462" height="576" loading="lazy" decoding="async">
+              <figcaption>Luzinhas LED acesas</figcaption>
+            </figure>
+            <figure class="slide">
+              <img src="./img/galeria-maos-caixa.webp" alt="Luminária Encanto de Natal Premium nas mãos, com guirlanda, bolinhas vermelhas e conector USB" width="482" height="667" loading="lazy" decoding="async">
+              <figcaption>O produto</figcaption>
+            </figure>
+            <figure class="slide">
+              <img src="./img/galeria-caixa-vermelha.webp" alt="Luminária Encanto de Natal Premium sendo colocada em uma caixa de presente vermelha forrada de cetim" width="465" height="575" loading="lazy" decoding="async">
+              <figcaption>Pronta para presentear</figcaption>
+            </figure>
+            <figure class="slide">
+              <img src="./img/galeria-embalagem.webp" alt="Caixa de Natal aberta com a Luminária Encanto de Natal Premium embalada dentro" width="482" height="647" loading="lazy" decoding="async">
+              <figcaption>Embalagem de Natal</figcaption>
+            </figure>
+          </div>
+          <button type="button" class="seta-gal ant" data-passo="-1" aria-label="Foto anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button type="button" class="seta-gal prox" data-passo="1" aria-label="Próxima foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+        <div class="thumbs" id="thumbs">
+          <button type="button" class="thumb" aria-current="true" aria-label="Foto 1: encaixa e acende"><img src="./img/galeria-tomada-ligando-mini.webp" alt="" width="160" height="160" decoding="async"></button>
+          <button type="button" class="thumb" aria-current="false" aria-label="Foto 2: projeção no teto"><img src="./img/galeria-projecao-sala.webp" alt="" width="900" height="1124" loading="lazy" decoding="async"></button>
+          <button type="button" class="thumb" aria-label="Foto 3: detalhes"><img src="./img/galeria-detalhes.webp" alt="" width="900" height="1124" loading="lazy" decoding="async"></button>
+          <button type="button" class="thumb" aria-label="Foto 4: luzinhas acesas"><img src="./img/galeria-maos-acesa.webp" alt="" width="462" height="576" loading="lazy" decoding="async"></button>
+          <button type="button" class="thumb" aria-label="Foto 5: o produto"><img src="./img/galeria-maos-caixa.webp" alt="" width="482" height="667" loading="lazy" decoding="async"></button>
+          <button type="button" class="thumb" aria-label="Foto 6: caixa de presente"><img src="./img/galeria-caixa-vermelha.webp" alt="" width="465" height="575" loading="lazy" decoding="async"></button>
+          <button type="button" class="thumb" aria-label="Foto 7: embalagem"><img src="./img/galeria-embalagem.webp" alt="" width="482" height="647" loading="lazy" decoding="async"></button>
+        </div>
+      </div>
+
+      <!-- Compra -->
+      <div class="compra">
+        <div class="eyebrow"><span class="dot" aria-hidden="true"></span>Coleção Natal 2026</div>
+        <h1>Luminária Encanto de Natal Premium <small>Projetor com luzes LED · árvore e guirlanda</small></h1>
+        <p class="hero-sub">Encaixe, apague a luz e o teto vira um <em>céu de Natal</em>: Papai Noel, árvores, estrelas e flocos de neve pela casa.</p>
+
+        <ul class="destaques">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M8 12.3l2.7 2.7L16.2 9.5"/></svg>Projeta no teto e nas paredes do cômodo</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M8 12.3l2.7 2.7L16.2 9.5"/></svg>Já vem montada: é conectar e acender</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M8 12.3l2.7 2.7L16.2 9.5"/></svg>Linda de dia, mágica à noite</li>
+        </ul>
+
+        <div class="offer-card">
+          <div class="price-line">
+            <span class="price" data-preco>R$ 89,90</span>
+            <span class="old" data-preco-de>R$ 139,90</span>
+            <span class="discount" data-desconto>ECONOMIZE R$ 50,00</span>
+          </div>
+          <div class="pix" data-sem-desconto="Frete grátis para todo o Brasil · Pedido monitorado"><b>Frete grátis</b> · Preço especial de Natal por tempo limitado</div>
+          <button type="button" class="cta" onclick="buyNow()">COMPRAR AGORA <span class="cta-seta" aria-hidden="true">→</span></button>
+          <div class="micro">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 017 0v3"/></svg>Compra segura</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Frete grátis</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></svg>Pedido monitorado</span>
+          </div>
+        </div>
+
+        <div class="aviso-natal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>
+          Peça com antecedência para receber antes do Natal.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== SELOS ===== -->
+  <div class="trust-strip">
+    <div class="wrap trust-grid">
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><div><b>Frete grátis</b><span>Para todo o Brasil</span></div></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></svg><div><b>Monitorado</b><span>Do envio à entrega</span></div></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/><path d="M8.8 12l2.3 2.3 4.2-4.3"/></svg><div><b>Pagamento seguro</b><span>Ambiente protegido</span></div></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M5 12v8.5h14V12M12 8v12.5"/><path d="M12 8C10 4 6.5 4.5 7.5 7c.4 1 2.5 1 4.5 1zM12 8c2-4 5.5-3.5 4.5-1-.4 1-2.5 1-4.5 1z"/></svg><div><b>Pronto pra presente</b><span>Já vem na caixinha</span></div></div>
+    </div>
+  </div>
+
+  <!-- ===== PROBLEMA x SOLUÇÃO ===== -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Decorar não precisa dar trabalho</div>
+        <h2>Chega de passar a tarde desembolando pisca-pisca.</h2>
+        <p>Uma peça só deixa a casa inteira com clima de Natal. Você conecta, apaga a luz e o ambiente se transforma.</p>
+      </div>
+
+      <div class="problem-grid">
+        <div class="problem">
+          <h3>Com a decoração de sempre...</h3>
+          <div class="checklist">
+            <div class="check"><i>×</i><span>Pisca-pisca embolado que leva horas para desenrolar.</span></div>
+            <div class="check"><i>×</i><span>Fios e extensões espalhados pela sala.</span></div>
+            <div class="check"><i>×</i><span>Enfeite que só aparece num cantinho da casa.</span></div>
+            <div class="check"><i>×</i><span>Todo ano a mesma decoração, sem aquele “uau”.</span></div>
+          </div>
+        </div>
+
+        <div class="solution">
+          <h3>Com a Luminária Encanto de Natal Premium...</h3>
+          <div class="checklist">
+            <div class="check"><i>✓</i><span>Tira da caixa, conecta e já está pronta.</span></div>
+            <div class="check"><i>✓</i><span>Uma peça compacta, sem fio atravessando o ambiente.</span></div>
+            <div class="check"><i>✓</i><span>A projeção cobre o teto e as paredes do cômodo.</span></div>
+            <div class="check"><i>✓</i><span>O efeito que faz todo mundo olhar pra cima.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DESTAQUE (foto grande) ===== -->
+  <section class="destaque">
+    <div class="wrap destaque-grid">
+      <div class="destaque-img">
+        <img class="destaque-gif" src="./img/galeria-tomada-acesa.webp" alt="Luminária Encanto de Natal Premium ligada numa bateria portátil acende e projeta Papai Noel, árvores e flocos de neve no teto de uma tenda, com a família olhando" width="384" height="572" loading="lazy" decoding="async">
+      </div>
+      <div class="destaque-texto">
+        <div class="kicker">O momento que fica na memória</div>
+        <h2>A reação das crianças <span class="destaque-em">vale o Natal inteiro.</span></h2>
+        <p>
+          Apagou a luz, o teto se enche de Papai Noel, renas, estrelas e flocos de neve.
+          É o tipo de lembrança que a família guarda: a ceia, a foto, a criançada olhando pra cima.
+        </p>
+        <div class="bullet-row">
+          <span class="pill">✓ Ceia de Natal</span>
+          <span class="pill">✓ Quarto das crianças</span>
+          <span class="pill">✓ Festas e confraternizações</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VEJA FUNCIONANDO (vídeo) ===== -->
+  <section class="prova-section" id="video">
+    <div class="wrap">
+      <div class="section-head prova-head">
+        <div class="kicker">Veja o efeito</div>
+        <h2>De enfeite na parede a <span class="destaque-em">céu estrelado</span> em segundos.</h2>
+      </div>
+
+      <div class="prova-card">
+        <!-- O vídeo só é baixado quando a seção chega perto da tela e
+             começa sozinho (mudo — navegador não deixa autoplay com som). -->
+        <div class="video-box" id="videoBox">
+          <video id="videoOferta" muted playsinline loop preload="none" poster="./img/video-capa.webp"
+                 aria-label="Vídeo: família encantada com as projeções de Natal no teto"></video>
+          <button type="button" class="video-som" id="videoSom">🔊 Toque para ouvir</button>
+        </div>
+
+        <div class="video-lado">
+          <p>Conecte a árvore, apague a luz e veja o ambiente se encher de Papai Noel, árvores, presentes, estrelas e flocos de neve.</p>
+          <div class="bullet-row">
+            <span class="pill">✓ Sala</span>
+            <span class="pill">✓ Quarto</span>
+            <span class="pill">✓ Cozinha</span>
+            <span class="pill">✓ Festas</span>
+          </div>
+          <div class="prova-cta">
+            <button type="button" class="cta" onclick="buyNow()">QUERO MEU NATAL ENCANTADO <span class="cta-seta" aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== AVALIAÇÕES =====
+           Ative este bloco SOMENTE quando tiver avaliações reais de
+           clientes deste produto (print, vídeo ou plataforma de reviews).
+           Copie o modelo de .pv-dep para cada avaliação.
+
+      <div class="prova-card" style="background:#fff;color:var(--ink);display:block;margin-top:16px">
+        <div class="pv-topo">
+          <b class="pv-nota">5,0</b>
+          <div><div class="pv-estrelas">★★★★★</div><small>X avaliações de quem comprou</small></div>
+        </div>
+        <div class="pv-dep">
+          <b>n*****e</b> <span class="pv-estrelas">★★★★★</span>
+          <p>“Texto real da avaliação aqui.”</p>
+        </div>
+      </div>
+      -->
+    </div>
+  </section>
+
+  <!-- ===== BENEFÍCIOS ===== -->
+  <section class="feature-section" id="beneficios">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Por que ela é diferente</div>
+        <h2>Muito mais Natal. Muito menos trabalho.</h2>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 3.4L17 8l-3.4 1.6L12 13l-1.6-3.4L7 8l3.4-1.6z"/><path d="M18.5 14l.8 1.7 1.7.8-1.7.8-.8 1.7-.8-1.7-1.7-.8 1.7-.8z"/><path d="M6 15.5l.6 1.3 1.3.6-1.3.6L6 19.3l-.6-1.3-1.3-.6 1.3-.6z"/></svg></div>
+          <h3>Céu de Natal no teto</h3>
+          <p>Projeta Papai Noel, árvores, renas, presentes, estrelas e flocos de neve coloridos pelo teto e pelas paredes.</p>
+        </div>
+        <div class="feature">
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l1 2 2 .3-1.5 1.4.4 2L12 7.3l-1.9.9.4-2L9 4.8l2-.3z"/><path d="M12 9l-5 6h3l-3.5 4.5h11L14 15h3z"/><path d="M12 19.5V22"/></svg></div>
+          <h3>Linda acesa ou apagada</h3>
+          <p>De dia é um enfeite de árvore e guirlanda com bolinhas vermelhas. À noite, as luzinhas LED acendem e a mágica começa.</p>
+        </div>
+        <div class="feature">
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v5M15 2v5"/><path d="M6.5 7h11v3.5a5.5 5.5 0 01-11 0z"/><path d="M12 16v6"/></svg></div>
+          <h3>Conecta e pronto</h3>
+          <p>Nada de montar, pendurar ou desembolar fios. Tirou da caixa, conectou, já está funcionando.</p>
+        </div>
+        <div class="feature">
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></svg></div>
+          <h3>Qualquer cômodo</h3>
+          <p>Sala, quarto das crianças, cozinha ou aquele cantinho da ceia: leva o clima de Natal para onde você quiser.</p>
+        </div>
+        <div class="feature">
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></svg></div>
+          <h3>Compacta e fácil de guardar</h3>
+          <p>Ocupa menos espaço que uma caixa de enfeites. Passou o Natal, volta para a caixinha até o ano que vem.</p>
+        </div>
+        <div class="feature">
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M5 12v8.5h14V12M12 8v12.5"/><path d="M12 8C10 4 6.5 4.5 7.5 7c.4 1 2.5 1 4.5 1zM12 8c2-4 5.5-3.5 4.5-1-.4 1-2.5 1-4.5 1z"/></svg></div>
+          <h3>Presente que encanta</h3>
+          <p>Vem em caixa temática de Natal. Um presente diferente para pais, avós, amigo-secreto e para quem tem criança em casa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AVALIAÇÕES (carrossel) =====
+       Os cards vêm da lista AVALIACOES, no <script> do final da página. -->
+  <section class="aval-section" id="avaliacoes" hidden>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Quem comprou, aprovou</div>
+        <h2>O que os clientes estão dizendo.</h2>
+        <p class="aval-resumo"><span class="pv-estrelas">★★★★★</span> <b>5,0</b> de média</p>
+      </div>
+      <div class="carrossel" data-carrossel aria-roledescription="carrossel" aria-label="Avaliações de clientes">
+        <div class="car-trilho" tabindex="0" id="avalTrilho"></div>
+        <button type="button" class="car-seta ant" data-passo="-1" aria-label="Avaliação anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button type="button" class="car-seta prox" data-passo="1" aria-label="Próxima avaliação"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        <div class="car-pontos" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CHAMADA DO MEIO ===== -->
+  <section class="cta-band">
+    <div class="wrap">
+      <div class="cta-band-inner">
+        <div class="kicker">Pronta para encantar a família?</div>
+        <h2>Esse ano, o Natal começa quando você apaga a luz.</h2>
+        <p data-sem-desconto="Frete grátis para todo o Brasil e pedido monitorado do envio à entrega.">Frete grátis para todo o Brasil e preço especial de Natal por tempo limitado.</p>
+        <div class="cta-band-price">
+          <span class="price" data-preco>R$ 89,90</span>
+          <span class="old" data-preco-de>R$ 139,90</span>
+        </div>
+        <button type="button" class="cta" onclick="buyNow()">QUERO MEU NATAL ENCANTADO <span class="cta-seta" aria-hidden="true">→</span></button>
+        <div class="micro">
+          <span>🚚 Frete grátis</span>
+          <span>📦 Pedido monitorado</span>
+          <span>🔒 Compra segura</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMO USAR ===== -->
+  <section id="como-funciona">
+    <div class="wrap demo-grid">
+      <div class="demo-img">
+        <!-- Funciona como GIF (mudo, em loop), mas MP4 pesa bem menos. -->
+        <video src="./video/apague-luz.mp4" poster="./img/apague-luz-capa.webp" autoplay muted loop playsinline preload="metadata"
+               aria-label="Luminária Encanto de Natal Premium acesa na mão, projetando Papai Noel, árvores e estrelas no teto da sala"></video>
+      </div>
+      <div>
+        <div class="kicker">Simples de usar</div>
+        <h2>Conecte, apague a luz e pronto.</h2>
+
+        <div class="step">
+          <div class="stepnum">1</div>
+          <div><h4>Tire da caixa</h4><p>A árvore com guirlanda já vem montada, com as luzinhas e as bolinhas no lugar.</p></div>
+        </div>
+        <div class="step">
+          <div class="stepnum">2</div>
+          <div><h4>Conecte</h4><p>Encaixe a peça na entrada de energia. As luzinhas LED acendem na hora.</p></div>
+        </div>
+        <div class="step">
+          <div class="stepnum">3</div>
+          <div><h4>Apague a luz</h4><p>Com o ambiente escuro, a projeção aparece no teto e nas paredes.</p></div>
+        </div>
+        <div class="step">
+          <div class="stepnum">4</div>
+          <div><h4>Aproveite a magia</h4><p>Ceia, filme de Natal, hora de dormir das crianças: o clima fica perfeito.</p></div>
+        </div>
+
+        <button type="button" class="cta" onclick="buyNow()">COMPRAR AGORA <span class="cta-seta" aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AMBIENTES ===== -->
+  <section style="padding-top:10px">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Em qualquer cantinho da casa</div>
+        <h2>Leve o Natal para o cômodo que quiser.</h2>
+      </div>
+      <div class="ambientes">
+        <figure class="amb">
+          <img src="./img/amb-parede.webp" alt="Luminária Encanto de Natal Premium na tomada da escada, projetando Papai Noel, árvores, renas e estrelas nas paredes e no teto" width="576" height="1024" loading="lazy" decoding="async">
+          <figcaption>Na parede da escada</figcaption>
+        </figure>
+        <figure class="amb">
+          <img src="./img/amb-cozinha.webp" alt="Teto da cozinha coberto de projeções coloridas de Papai Noel, árvores, presentes e flocos de neve" width="576" height="1024" loading="lazy" decoding="async">
+          <figcaption>Na cozinha</figcaption>
+        </figure>
+        <figure class="amb largo">
+          <img src="./img/amb-quarto.webp" alt="Quarto com o teto e as paredes cobertos de projeções de Natal acima da cama" width="576" height="1024" style="object-position:center 60%" loading="lazy" decoding="async">
+          <figcaption>No quarto</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FICHA TÉCNICA ===== -->
+  <!-- CONFIRA cada item com o fornecedor antes de publicar
+       (alimentação, voltagem e itens inclusos principalmente). -->
+  <section id="detalhes">
+    <div class="wrap">
+      <div class="spec-box">
+        <!-- Funciona como GIF (mudo, em loop), mas MP4 pesa bem menos. -->
+        <video src="./video/detalhes.mp4" poster="./img/detalhes-capa.webp" autoplay muted loop playsinline preload="metadata"
+               aria-label="Luminária Encanto de Natal Premium sendo encaixada na tomada da parede e projetando desenhos de Natal no teto da varanda"></video>
+        <div>
+          <div class="kicker">Detalhes do produto</div>
+          <h2>Pequena na caixa. Gigante no efeito.</h2>
+          <div class="spec-list">
+            <div class="spec"><b>Formato</b><span>Árvore de Natal com guirlanda</span></div>
+            <div class="spec"><b>Iluminação</b><span>Luzinhas LED + projeção</span></div>
+            <div class="spec"><b>Projeções</b><span>Papai Noel, árvores, renas, presentes, estrelas e neve</span></div>
+            <div class="spec"><b>Conexão</b><span>USB: na tomada ou em carregador portátil (powerbank)</span></div>
+            <div class="spec"><b>Acabamento</b><span>Folhagem verde com bolinhas vermelhas e estrela dourada</span></div>
+            <div class="spec"><b>Indicada para</b><span>Ambientes internos: sala, quarto, cozinha e festas</span></div>
+          </div>
+          <div class="spec-dica">
+            <span class="spec-dica-ico" aria-hidden="true">🔋</span>
+            <p><b>Sem tomada por perto? Sem problema.</b> Ligue a luminária num carregador portátil ou powerbank e leve o céu de Natal para onde quiser: mesa da ceia, quarto das crianças, varanda ou festa, sem fio e sem procurar tomada.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OFERTA ===== -->
+  <section class="offer-section" id="comprar">
+    <div class="wrap offer-grid">
+      <div>
+        <div class="kicker">Oferta especial de Natal</div>
+        <h2>Uma casa encantada, sem passar o dia decorando.</h2>
+        <p>Troque o pisca-pisca embolado por uma peça que transforma o ambiente inteiro — e faça desse Natal o mais bonito que a sua família já viu.</p>
+        <div class="bullet-row">
+          <span class="pill">✓ Frete grátis</span>
+          <span class="pill">✓ Pedido monitorado</span>
+          <span class="pill">✓ Pagamento seguro</span>
+        </div>
+      </div>
+
+      <div class="offer-panel">
+        <div class="offer-name">LUMINÁRIA ENCANTO DE NATAL PREMIUM</div>
+        <div class="price-line">
+          <span class="price" data-preco>R$ 89,90</span>
+          <span class="old" data-preco-de>R$ 139,90</span>
+          <span class="discount" data-desconto>ECONOMIZE R$ 50,00</span>
+        </div>
+        <div class="stock">🎅 Peça com antecedência para receber a tempo do Natal</div>
+        <button type="button" class="cta" id="buyButton" onclick="buyNow()">QUERO MEU NATAL ENCANTADO <span class="cta-seta" aria-hidden="true">→</span></button>
+        <p class="offer-note">🔒 Você ajusta a quantidade na sacola e finaliza com segurança.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Dúvidas frequentes</div>
+        <h2>Tudo o que você precisa saber.</h2>
+      </div>
+
+      <div class="faq">
+        <details>
+          <summary>Como funciona a projeção?</summary>
+          <p>Ao conectar a árvore, as luzinhas LED acendem e a projeção é lançada no ambiente. Com a luz do cômodo apagada, os desenhos de Natal aparecem no teto e nas paredes. Quanto mais escuro o ambiente, mais nítido fica o efeito.</p>
+        </details>
+        <details>
+          <summary>Como eu ligo? Precisa de pilha?</summary>
+          <p>Não usa pilha. A peça tem conector USB: basta ligar em um carregador USB de tomada ou outra fonte USB.</p>
+        </details>
+        <details>
+          <summary>Precisa montar alguma coisa?</summary>
+          <p>Não. A árvore com guirlanda já vem pronta, com as bolinhas e as luzinhas no lugar. É tirar da caixa e conectar.</p>
+        </details>
+        <details>
+          <summary>Chega antes do Natal?</summary>
+          <p>O prazo de entrega para o seu CEP aparece na finalização do pedido, antes do pagamento. Como a procura aumenta perto do Natal, recomendamos fazer o pedido com antecedência. O pedido é monitorado do envio até a entrega.</p>
+        </details>
+        <details>
+          <summary>Serve para presente?</summary>
+          <p>Sim! Ela vem em caixa temática de Natal, o que facilita na hora de presentear no amigo-secreto, para os avós ou para quem tem criança em casa.</p>
+        </details>
+        <details>
+          <summary>Posso usar em área externa?</summary>
+          <p>Ela foi pensada para ambientes internos ou cobertos, protegidos de chuva e umidade.</p>
+        </details>
+        <details>
+          <summary>Consigo acompanhar meu pedido?</summary>
+          <p>Sim. O pedido é monitorado, permitindo acompanhar o envio até a entrega.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <img class="logo-footer" src="./img/logo-encanto.webp" alt="Encanto de Natal" width="238" height="300" loading="lazy">
+    <div class="footer-txt">
+      <span>© Encanto de Natal · Todos os direitos reservados</span>
+      <!-- troque pelo e-mail de suporte desta loja -->
+      <a href="mailto:suporte@sualoja.com">Suporte: suporte@sualoja.com</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== BARRA FIXA DE COMPRA (mobile) ===== -->
+<div class="sticky-mobile">
+  <div class="sticky-price">
+    <span data-preco-de>R$ 139,90</span>
+    <b data-preco>R$ 89,90</b>
+  </div>
+  <button type="button" class="cta" onclick="buyNow()">COMPRAR AGORA <span class="cta-seta" aria-hidden="true">→</span></button>
+</div>
+
+<script src="./js/pixel.js"></script>
+<script src="./js/loja.js"></script>
+<script src="./js/enfeites.js"></script>
+<script src="./js/sacola.js"></script>
+<script>
+/* ============================================================
+   CONFIG — os PREÇOS vêm do js/loja.js (mesma tabela da página
+   do produto e do checkout, para nunca divergirem). Os preços se
+   espalham sozinhos por todos os pontos da página e o desconto
+   em % é calculado automaticamente.
+   ============================================================ */
+var CONFIG = {
+  produto:     PRODUTO_NOME,
+  preco:       precoTotal(1),
+  precoDe:     PRECO_CHEIO
+};
+
+function reais(v){ return brl(v); }
+
+function aplicarPrecos(){
+  var pct = Math.round((1 - CONFIG.preco / CONFIG.precoDe) * 100);
+  var comDesconto = pct > 0;
+
+  document.querySelectorAll("[data-preco]").forEach(function(el){ el.textContent = reais(CONFIG.preco); });
+  /* sem desconto real, não existe preço riscado */
+  document.querySelectorAll("[data-preco-de]").forEach(function(el){
+    el.textContent = reais(CONFIG.precoDe);
+    el.hidden = !comDesconto;
+  });
+  document.querySelectorAll("[data-desconto]").forEach(function(el){
+    if (comDesconto) el.textContent = "ECONOMIZE " + reais(CONFIG.precoDe - CONFIG.preco); else el.remove();
+  });
+  document.querySelectorAll("[data-desconto-curto]").forEach(function(el){
+    if (comDesconto) el.textContent = reais(CONFIG.precoDe - CONFIG.preco) + " OFF"; else el.remove();
+  });
+  /* frases que falam em "preço especial" trocam por outra verdadeira */
+  if (!comDesconto){
+    document.querySelectorAll("[data-sem-desconto]").forEach(function(el){
+      el.textContent = el.getAttribute("data-sem-desconto");
+    });
+  }
+}
+
+
+/* Todos os botões de compra: põe 1 unidade na sacola e abre a
+   sacola lateral aqui mesmo (js/sacola.js). Dentro dela a pessoa
+   ajusta a quantidade e segue para o pagamento. */
+function buyNow(){
+  adicionarNaSacola(COR_PADRAO, 1);
+}
+
+/* ============================================================
+   VÍDEO — começa como FOTO. Só baixa quando a pessoa toca.
+   ============================================================ */
+function montarVideo(){
+  var v = document.getElementById("videoOferta");
+  var som = document.getElementById("videoSom");
+  if (!v || !som) return;
+
+  function carregar(){
+    if (!v.src) { v.src = "./video/oferta.mp4"; v.preload = "auto"; }
+  }
+  function tocar(){ carregar(); v.play().catch(function(){}); }
+
+  /* Botão de som: o navegador só libera o áudio depois de um toque. */
+  som.addEventListener("click", function(){
+    v.muted = false;
+    v.controls = true;
+    som.hidden = true;
+    tocar();
+  });
+
+  if (!("IntersectionObserver" in window)) { tocar(); return; }
+
+  /* Começa a baixar um pouco antes de aparecer... */
+  new IntersectionObserver(function(es, obs){
+    if (es[0].isIntersecting) { carregar(); obs.disconnect(); }
+  }, { rootMargin: "400px 0px" }).observe(v);
+
+  /* ...toca quando metade está na tela e pausa ao sair. */
+  new IntersectionObserver(function(es){
+    if (es[0].isIntersecting) tocar(); else v.pause();
+  }, { threshold: 0.5 }).observe(v);
+}
+
+/* ============================================================
+   GALERIA DO TOPO — rolagem nativa com "snap" (arrastar no
+   celular é do próprio navegador); miniaturas, setas e teclado
+   só mandam rolar até a foto certa.
+   ============================================================ */
+function montarGaleria(){
+  var trilho = document.getElementById("slides");
+  if (!trilho) return;
+  var slides = trilho.querySelectorAll(".slide");
+  var thumbs = document.querySelectorAll("#thumbs .thumb");
+  var contador = document.getElementById("contadorFoto");
+  var atual = 0;
+
+  function irPara(i){
+    i = (i + slides.length) % slides.length;
+    trilho.scrollTo({ left: slides[i].offsetLeft, behavior: "smooth" });
+  }
+  function marcar(i){
+    if (i === atual) return;
+    atual = i;
+    thumbs.forEach(function(t, k){ t.setAttribute("aria-current", k === i ? "true" : "false"); });
+    if (contador) contador.textContent = (i + 1) + "/" + slides.length;
+  }
+
+  var pendente = false;
+  trilho.addEventListener("scroll", function(){
+    if (pendente) return;
+    pendente = true;
+    requestAnimationFrame(function(){
+      pendente = false;
+      marcar(Math.round(trilho.scrollLeft / trilho.clientWidth));
+    });
+  }, { passive: true });
+
+  thumbs.forEach(function(t, k){ t.addEventListener("click", function(){ irPara(k); }); });
+  document.querySelectorAll(".seta-gal").forEach(function(b){
+    b.addEventListener("click", function(){ irPara(atual + Number(b.getAttribute("data-passo"))); });
+  });
+  trilho.addEventListener("keydown", function(e){
+    if (e.key === "ArrowRight"){ e.preventDefault(); irPara(atual + 1); }
+    if (e.key === "ArrowLeft"){ e.preventDefault(); irPara(atual - 1); }
+  });
+  if (contador) contador.textContent = "1/" + slides.length;
+
+}
+
+/* ============================================================
+   AVALIAÇÕES — cada item vira um card no carrossel.
+   foto   = foto do produto enviada pelo cliente (./img/)
+   avatar = foto de perfil (./img/avaliacoes/)
+   balao  = "topo" para o balão ficar no alto da foto (padrão: embaixo)
+   Lista vazia = seção escondida.
+   ============================================================ */
+var AVALIACOES = [
+  { nome:"Fernanda Souza",   avatar:"fernanda.webp", foto:"chegada-5.webp", balao:"topo",
+    texto:"Fiquei muito delicado, e o cartão de Feliz Natal deixou ainda mais fofo. Adorei a apresentação ❤️" },
+  { nome:"Mariana Lopes",    avatar:"mariana.webp",  foto:"aval-mariana.webp",
+    texto:"A árvore ficou uma graça! Com o pisca-pisca aceso, deixou minha sala superaconchegante. 🎄" },
+  { nome:"Carlos Henrique",  avatar:"carlos.webp",   foto:"chegada-3.webp",
+    texto:"Curti muito o acabamento. A decoração ficou bonita e a embalagem no plástico bolha protege bem o produto." },
+  { nome:"Patrícia Alves",   avatar:"patricia.webp", foto:"aval-patricia.webp", balao:"topo",
+    texto:"São muito bonitas! A cor é exatamente como eu esperava. Chegaram dentro do prazo e recomendo. 💖" },
+  { nome:"Ana Paula",        avatar:"ana.webp",      foto:"chegada-1.webp",
+    texto:"Olá pessoal, eu comprei uma gracinha 😍 Ele fica muito lindo e gostei do cartãozinho de Natal que veio junto :)" },
+  { nome:"Matheus Gabriel",  avatar:"matheus.webp",  foto:"aval-matheus.webp",
+    texto:"Gostei bastante do conjunto! As luzinhas ficaram lindas na cortina e na árvore. ✨" },
+  { nome:"Márcia Oliveira",  avatar:"marcia.webp",   foto:"chegada-2.webp",
+    texto:"Que coisa mais linda! 🎄 Gostei dos detalhes vermelhos e dourados. Ficou uma graça na decoração em casa." },
+  { nome:"Camila Costa",     avatar:"camila.webp",   foto:"aval-camila.webp",   balao:"topo",
+    texto:"Comprei sem ter nenhuma avaliação e superou minhas expectativas! Muito perfeito! ❤️" },
+  { nome:"João Marcos",      avatar:"joao.webp",     foto:"chegada-4.webp",
+    texto:"Bonito o produto, gostei principalmente dos detalhes da árvore. A caixa ficou super organizada também." }
+];
+
+function montarAvaliacoes(){
+  var sec = document.getElementById("avaliacoes");
+  var trilho = document.getElementById("avalTrilho");
+  if (!sec || !trilho || !AVALIACOES.length) return;
+  AVALIACOES.forEach(function(a){
+    var fig = document.createElement("figure");
+    fig.className = "car-item aval-item";
+    if (a.foto){
+      var img = document.createElement("img");
+      img.src = "./img/" + a.foto;
+      img.alt = "Foto do produto enviada por " + a.nome;
+      img.width = 800; img.height = 800;
+      img.loading = "lazy"; img.decoding = "async";
+      fig.appendChild(img);
+    }
+    var t = document.createElement("figcaption");
+    t.className = "aval-texto" + (a.balao === "topo" ? " no-topo" : "");
+    t.innerHTML = '<div class="aval-quem"><img alt="" width="48" height="48" loading="lazy">' +
+                  '<div><b></b><span class="pv-estrelas" aria-label="5 de 5 estrelas">★★★★★</span></div></div><p></p>';
+    var av = t.querySelector(".aval-quem img");
+    if (a.avatar) av.src = "./img/avaliacoes/" + a.avatar; else av.remove();
+    t.querySelector("b").textContent = a.nome;
+    t.querySelector("p").textContent = "“" + a.texto + "”";
+    fig.appendChild(t);
+    trilho.appendChild(fig);
+  });
+  sec.hidden = false;
+}
+
+/* ============================================================
+   CARROSSEL — passa sozinho a cada 4s, setas voltam/avançam,
+   pausa quando a pessoa toca/passa o mouse ou sai da tela.
+   ============================================================ */
+function montarCarrosseis(){
+  var parado = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll("[data-carrossel]").forEach(function(car){
+    var trilho = car.querySelector(".car-trilho");
+    var itens = trilho.children;
+    if (!itens.length) return;
+    var pontos = car.querySelector(".car-pontos");
+    var atual = 0, timer = null, visivel = false, pausa = false;
+
+    for (var k = 0; k < itens.length; k++) pontos.appendChild(document.createElement("span"));
+    function marcar(i){
+      atual = i;
+      Array.prototype.forEach.call(pontos.children, function(p, k){ p.className = k === i ? "on" : ""; });
+    }
+    function irPara(i){
+      i = (i + itens.length) % itens.length;
+      trilho.scrollTo({ left: itens[i].offsetLeft, behavior: "smooth" });
+    }
+    function ligar(){
+      clearInterval(timer);
+      if (!parado && visivel && !pausa) timer = setInterval(function(){ irPara(atual + 1); }, 4000);
+    }
+    marcar(0);
+
+    trilho.addEventListener("scroll", function(){
+      marcar(Math.round(trilho.scrollLeft / trilho.clientWidth));
+    }, { passive: true });
+
+    car.querySelectorAll(".car-seta").forEach(function(b){
+      b.addEventListener("click", function(){ irPara(atual + Number(b.getAttribute("data-passo"))); ligar(); });
+    });
+
+    /* pausa enquanto a pessoa interage, retoma depois */
+    function pausar(){ pausa = true; ligar(); }
+    function retomar(){ pausa = false; ligar(); }
+    car.addEventListener("mouseenter", pausar);
+    car.addEventListener("mouseleave", retomar);
+    trilho.addEventListener("touchstart", pausar, { passive: true });
+    trilho.addEventListener("touchend", function(){ setTimeout(retomar, 3000); }, { passive: true });
+
+    if ("IntersectionObserver" in window){
+      new IntersectionObserver(function(es){ visivel = es[0].isIntersecting; ligar(); }, { threshold: 0.4 }).observe(car);
+    } else { visivel = true; ligar(); }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  aplicarPrecos();
+  montarGaleria();
+  montarVideo();
+  montarAvaliacoes();
+  montarCarrosseis();
+});
+</script>
+
+</body>
+</html>

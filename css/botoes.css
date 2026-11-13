@@ -1,0 +1,79 @@
+/* ============================================================
+   ENCANTO DE NATAL — botão de compra (CTA), compartilhado
+   Landing, página do produto e sacola usam este mesmo botão.
+   Verde-pinheiro com volume, fio dourado, seta que avança e um
+   reflexo de luz no hover.
+   ============================================================ */
+
+.cta{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;min-height:56px;padding:15px 22px;
+  border:1px solid #0a2c1d;border-radius:12px;cursor:pointer;
+  background:linear-gradient(180deg,#1e6e4b 0%,#155a3c 52%,#0f4630 100%);
+  color:#fff;font-weight:800;font-size:15.5px;line-height:1.2;
+  letter-spacing:.045em;text-align:center;
+  text-shadow:0 1px 0 rgba(0,0,0,.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),        /* brilho na borda de cima */
+    inset 0 0 0 1px rgba(214,166,69,.38),       /* fio dourado */
+    0 1px 2px rgba(11,34,25,.22),
+    0 10px 22px -8px rgba(15,61,42,.55);
+  appearance:none;-webkit-appearance:none;
+  transition:transform .18s ease, box-shadow .2s ease, filter .2s ease
+}
+
+/* seta separada do texto: avança no hover */
+.cta-seta{
+  display:inline-block;font-weight:700;font-size:1.15em;line-height:1;
+  transition:transform .2s ease
+}
+
+/* reflexo de luz que atravessa o botão no hover */
+.cta:after{
+  content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;z-index:-1;
+  background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.16) 50%,transparent 100%);
+  transform:skewX(-18deg);pointer-events:none;
+  transition:left .6s ease
+}
+
+@media (hover:hover){
+  .cta:hover{
+    filter:brightness(1.06);
+    transform:translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.24),
+      inset 0 0 0 1px rgba(214,166,69,.55),
+      0 2px 4px rgba(11,34,25,.22),
+      0 16px 30px -10px rgba(15,61,42,.6)
+  }
+  .cta:hover .cta-seta{transform:translateX(4px)}
+  .cta:hover:after{left:120%}
+}
+
+.cta:active{
+  transform:translateY(0) scale(.99);filter:brightness(.97);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,.25),
+    inset 0 0 0 1px rgba(214,166,69,.38),
+    0 4px 10px -6px rgba(15,61,42,.5)
+}
+
+.cta:focus-visible{outline:3px solid var(--gold,#d6a645);outline-offset:3px}
+
+@media (prefers-reduced-motion:reduce){
+  .cta,.cta-seta,.cta:after{transition:none}
+  .cta:hover{transform:none}
+}
+
+/* --- Selo Black Friday (foto principal da landing e do produto) ---
+   Para tirar depois da Black Friday: apague o <span class="selo-bf">
+   nas duas páginas (ou troque display:inline-flex por display:none). */
+.selo-bf{
+  position:absolute;z-index:2;display:inline-flex;align-items:center;gap:5px;
+  background:#0b0b0b;color:#fff;border:1px solid #d6a645;
+  font-weight:900;font-size:11.5px;letter-spacing:.08em;line-height:1;
+  padding:7px 11px;border-radius:999px;
+  box-shadow:0 8px 18px -6px rgba(0,0,0,.55)
+}
+.selo-bf b{color:#f2c75c;font-weight:900}

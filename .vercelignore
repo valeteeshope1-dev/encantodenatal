@@ -1,0 +1,4 @@
+# não sobe para a Vercel: segredos e o servidor de teste local
+.env
+.env.*
+servidor-local.js

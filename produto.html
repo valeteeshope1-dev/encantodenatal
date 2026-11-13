@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f3d2a">
+<title>Comprar a Luminária Encanto de Natal Premium</title>
+<link rel="icon" type="image/png" sizes="32x32" href="./img/icone-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./img/icone-180.png">
+<meta name="description" content="Escolha a quantidade da sua Luminária Encanto de Natal Premium: árvore e guirlanda com luzinhas LED que projetam um céu de Natal no teto. Frete grátis para todo o Brasil.">
+<link rel="preload" as="image" href="./img/hero-projecao.webp">
+<link rel="preload" as="font" type="font/woff2" href="./fonts/playfair-display-latin-600-normal.woff2" crossorigin>
+<link rel="stylesheet" href="./css/fontes.css">
+<link rel="stylesheet" href="./css/botoes.css">
+<link rel="stylesheet" href="./css/sacola.css">
+<style>
+/* ============================================================
+   ENCANTO DE NATAL — Pagina do produto
+   Mesma estrutura da pagina de produto da Navya, com a paleta e
+   a tematica da oferta de Natal. Mobile first. Independente:
+   sem CDN, sem fontes externas.
+   Precos, modelos e sacola: js/loja.js (fonte unica).
+   ============================================================ */
+
+:root{
+  --bg:#fbf6ee;
+  --paper:#ffffff;
+  --ink:#16241c;
+  --muted:#5f6b63;
+  --pine:#0f3d2a;
+  --pine-2:#17573c;
+  --red:#c0182f;
+  --red-dark:#8e0f22;
+  --gold:#d6a645;
+  --gold-soft:#f7ecd2;
+  --mint:#eaf3ec;
+  --green-ok:#1d7f4b;
+  --border:#eadfcd;
+  --shadow:0 14px 40px rgba(15,61,42,.12);
+  --radius:20px;
+  --max:1180px;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;   /* css/fontes.css */
+  --bar:calc(78px + env(safe-area-inset-bottom, 0px));
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:rgba(192,24,47,.12)}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:108px}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  color:var(--ink);background:var(--bg);
+  line-height:1.55;font-size:16px;overflow-x:hidden;
+  padding-bottom:var(--bar)
+}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+button{font:inherit;color:inherit}
+h1,h2,h3{margin:0}
+h1,h2{font-family:var(--serif);font-weight:600}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+.wrap{width:100%;padding:0 18px;margin:0 auto;max-width:var(--max)}
+
+/* --- Topo (igual à landing) ----------------------------------- */
+.announcement{
+  background:var(--red);color:#fff;text-align:center;
+  padding:7px 12px;font-weight:800;font-size:12px;line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+@media (max-width:560px){.announcement .so-desk{display:none}}
+@media (min-width:700px){.announcement{padding:9px 16px;font-size:13px}}
+.announcement b{color:var(--gold-soft)}
+
+.brandbar{
+  background:var(--pine);border-bottom:3px solid var(--gold);
+  padding:8px 18px;display:flex;align-items:center;justify-content:center;
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 6px 18px rgba(11,34,25,.18)
+}
+.brandbar>a{position:relative;z-index:2;display:block}
+.logo{height:64px;width:auto}
+
+/* pisca-pisca (o JS em js/enfeites.js monta as lâmpadas) */
+.piscas{
+  position:absolute;left:0;right:0;bottom:-44px;height:46px;
+  overflow:hidden;pointer-events:none;z-index:1;
+  background-repeat:repeat-x;background-position:0 0
+}
+.lamp{
+  position:absolute;top:9px;width:12px;height:30px;
+  transform-origin:6px 0;transform:rotate(var(--r,0deg))
+}
+.lamp:before{
+  content:"";position:absolute;left:3px;top:0;width:6px;height:7px;z-index:2;
+  border-radius:1.5px 1.5px 1px 1px;
+  background:repeating-linear-gradient(180deg,#2b4234 0 1.4px,#0c1811 1.4px 2.4px);
+  box-shadow:inset 1px 0 0 rgba(255,255,255,.14)
+}
+.vidro{
+  position:absolute;left:.5px;top:6px;width:11px;height:16px;z-index:1;
+  border-radius:50% 50% 50% 50% / 40% 40% 60% 60%;
+  background:
+    radial-gradient(ellipse 28% 20% at 33% 27%, rgba(255,255,255,.95), rgba(255,255,255,0)),
+    radial-gradient(ellipse 62% 56% at 50% 62%, var(--hot) 0%, var(--c) 52%, var(--deep) 100%);
+  box-shadow:0 0 5px 1px var(--c), inset 0 -2px 3px rgba(0,0,0,.22);
+  animation:vidro var(--d,2.4s) ease-in-out var(--atraso,0s) infinite
+}
+.lamp:after{
+  content:"";position:absolute;left:-13px;top:-5px;width:38px;height:38px;z-index:0;
+  border-radius:50%;
+  background:radial-gradient(circle, var(--glow) 0%, transparent 66%);
+  animation:halo var(--d,2.4s) ease-in-out var(--atraso,0s) infinite
+}
+@keyframes vidro{0%,38%,72%,100%{opacity:1} 55%{opacity:.5}}
+@keyframes halo {0%,38%,72%,100%{opacity:1} 55%{opacity:.06}}
+@media (prefers-reduced-motion:reduce){.vidro,.lamp:after{animation:none}}
+
+/* --- Galeria -------------------------------------------------- */
+.galeria{padding:40px 0 0}
+.galeria-principal{
+  background:linear-gradient(150deg,#fff,var(--gold-soft));
+  border:1px solid var(--border);border-radius:22px;
+  padding:10px;box-shadow:var(--shadow);position:relative
+}
+.galeria-principal img{
+  width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:15px
+}
+.selo-desconto[hidden],.old[hidden],.discount[hidden]{display:none}
+.selo-bf{top:53px;left:18px}
+.selo-desconto{
+  position:absolute;top:18px;left:18px;z-index:2;
+  background:var(--red);color:#fff;font-weight:900;font-size:12px;
+  padding:7px 11px;border-radius:99px;box-shadow:0 6px 16px rgba(192,24,47,.35)
+}
+.miniaturas{
+  display:flex;gap:9px;margin-top:11px;
+  overflow-x:auto;scrollbar-width:none;padding-bottom:2px
+}
+.miniaturas::-webkit-scrollbar{display:none}
+.mini{
+  flex:0 0 68px;width:68px;height:68px;padding:0;
+  border:2px solid var(--border);border-radius:13px;overflow:hidden;
+  background:#fff;cursor:pointer;appearance:none;-webkit-appearance:none;
+  transition:border-color .15s ease
+}
+.mini img{width:100%;height:100%;object-fit:cover}
+.mini.ativa{border-color:var(--pine);box-shadow:0 0 0 2px var(--gold) inset}
+
+/* --- Bloco de compra ------------------------------------------ */
+.compra{padding:22px 0 40px}
+.categoria{
+  font-size:11px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.11em;color:var(--red)
+}
+h1{font-size:clamp(26px,6.6vw,32px);line-height:1.12;letter-spacing:-.015em;margin:8px 0 10px}
+
+.avaliacao{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:700}
+.avaliacao[hidden]{display:none}
+.estrelas{color:var(--gold);letter-spacing:1px;font-size:15px}
+.resumo-curto{font-size:15px;color:var(--muted);margin:0}
+
+.preco-bloco{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px;margin-top:18px;box-shadow:var(--shadow);border-top:4px solid var(--gold)
+}
+.price-line{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.price{font-size:34px;font-weight:900;letter-spacing:-.035em;line-height:1}
+.old{text-decoration:line-through;color:#8f978f;font-weight:700;font-size:15px}
+.discount{
+  background:#e3f4ea;color:#1d7f4b;border:1px solid #bfe3cc;
+  padding:5px 9px;border-radius:8px;font-weight:900;font-size:12px
+}
+.parcela{font-size:13px;color:var(--ink);font-weight:800;margin-top:8px}
+.aviso-natal{
+  display:flex;gap:9px;align-items:center;background:var(--gold-soft);color:#7a5714;
+  padding:11px 12px;border-radius:11px;font-weight:800;font-size:13px;margin:14px 0 0
+}
+
+/* --- Seletores ------------------------------------------------ */
+.grupo{margin-top:24px}
+.grupo[hidden]{display:none}
+.grupo-titulo{
+  font-size:12px;font-weight:900;letter-spacing:.05em;
+  text-transform:uppercase;margin-bottom:10px;
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap
+}
+.grupo-titulo em{font-style:normal;color:var(--muted);font-weight:800;text-transform:none;letter-spacing:0}
+
+/* modelos (só aparece se houver mais de um em js/loja.js) */
+.cores{display:flex;gap:10px;flex-wrap:wrap}
+.cor{
+  min-width:54px;padding:0;border:0;background:none;cursor:pointer;
+  appearance:none;-webkit-appearance:none;text-align:center
+}
+.cor-bola{
+  display:block;width:44px;height:44px;margin:0 auto 5px;border-radius:50%;
+  border:2px solid #d6cbb8;box-shadow:inset 0 -5px 10px rgba(0,0,0,.07);
+  transition:border-color .15s ease, transform .15s ease
+}
+.cor-nome{display:block;font-size:11px;font-weight:800;color:var(--muted)}
+.cor.ativa .cor-bola{border-color:var(--pine);transform:scale(1.06);box-shadow:0 0 0 3px var(--gold-soft), inset 0 -5px 10px rgba(0,0,0,.07)}
+.cor.ativa .cor-nome{color:var(--pine)}
+
+/* quantidade */
+.qtd-linha{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.stepper{
+  display:flex;align-items:center;flex:0 0 auto;
+  border:1.5px solid var(--border);border-radius:13px;
+  background:#fff;overflow:hidden
+}
+.step{
+  width:46px;height:50px;border:0;background:#fff;
+  font-size:21px;font-weight:900;color:var(--pine);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  appearance:none;-webkit-appearance:none;line-height:1
+}
+.step:active{background:var(--mint)}
+.step:disabled{color:#c5c9bf;cursor:default}
+.step-input{
+  width:60px;height:50px;
+  border:0;border-left:1.5px solid var(--border);border-right:1.5px solid var(--border);
+  text-align:center;font-size:17px;font-weight:900;font-family:inherit;
+  color:var(--ink);background:#fff;
+  -moz-appearance:textfield;appearance:textfield
+}
+.step-input::-webkit-outer-spin-button,
+.step-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.step-input:focus{outline:2px solid var(--gold);outline-offset:-2px}
+.qtd-resumo{line-height:1.3;min-width:0}
+.qtd-resumo b{display:block;font-size:15px;font-weight:900}
+.qtd-resumo span{font-size:12.5px;color:var(--ink);font-weight:800}
+.qtd-dica{
+  margin:11px 0 0;padding:10px 12px;
+  font-size:12.5px;font-weight:700;color:var(--ink);
+  background:var(--mint);border-radius:10px;border-left:3px solid var(--gold)
+}
+.qtd-dica b{color:var(--ink)}
+
+/* --- Botao: estilo em css/botoes.css; aqui só o espaço acima --- */
+.compra .cta{margin-top:20px;min-height:58px}
+.micro{
+  display:flex;justify-content:center;gap:12px;flex-wrap:wrap;
+  margin-top:14px;color:#66706a;font-size:12px;font-weight:700
+}
+
+/* --- Selos ---------------------------------------------------- */
+.selos{
+  display:grid;grid-template-columns:1fr 1fr;background:#fff;
+  border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:22px
+}
+.selo{padding:14px;border-right:1px solid var(--border)}
+.selo:nth-child(2n){border-right:0}
+.selo:nth-child(-n+2){border-bottom:1px solid var(--border)}
+.selo b{display:block;font-size:13px}
+.selo span{font-size:11px;color:var(--muted);line-height:1.3;display:block}
+
+/* --- Descricao visual (blocos alternados) --------------------- */
+.descricao{background:#fff;border-top:1px solid var(--border)}
+.desc-bloco{display:grid;grid-template-columns:1fr;align-items:center;background:#fff}
+.desc-bloco:nth-child(2){background:var(--bg)}
+.desc-bloco .desc-img{order:1}
+.desc-bloco .desc-texto{order:2}
+.desc-img img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover}
+.desc-texto{padding:34px 22px;text-align:center}
+.desc-texto h3{
+  font-family:var(--serif);
+  font-size:clamp(22px,5.8vw,28px);font-weight:600;
+  line-height:1.2;letter-spacing:-.01em;margin:0
+}
+.desc-texto h3 em{font-style:italic;color:var(--red)}
+.desc-sub{font-size:15px;color:var(--muted);font-weight:600;margin:14px 0 0;line-height:1.5}
+.desc-lista{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:12px}
+.desc-lista li{font-size:15.5px;line-height:1.45;text-align:center}
+.desc-lista li b{color:var(--red);font-weight:900;margin-right:7px;font-size:16px}
+
+/* --- Abas de conteudo ----------------------------------------- */
+.detalhes{padding:46px 0}
+details{
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  margin-bottom:9px;overflow:hidden
+}
+summary{
+  cursor:pointer;font-weight:800;list-style:none;position:relative;
+  padding:17px 46px 17px 18px;font-size:15px;line-height:1.35
+}
+summary::-webkit-details-marker{display:none}
+summary:after{
+  content:"+";position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  font-size:24px;color:var(--red);font-weight:400;line-height:1
+}
+details[open] summary:after{content:"–"}
+.det-corpo{padding:0 18px 18px}
+.det-corpo p{color:var(--muted);margin:0 0 12px;font-size:14px}
+.det-corpo p:last-child{margin-bottom:0}
+.det-corpo p b{color:var(--ink)}
+.det-lista{display:grid;gap:8px}
+.det-item{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:11px 13px;background:var(--bg);border-radius:11px;font-size:13px;
+  border-left:3px solid var(--gold)
+}
+.det-item b{font-weight:800}
+.det-item span{color:var(--muted);text-align:right}
+
+/* --- Avaliacoes ------------------------------------------------
+   A secao inteira fica escondida enquanto AVALIACOES estiver
+   vazio. Preencha só com avaliações reais deste produto. */
+.avaliacoes{background:#fff;border-top:1px solid var(--border);padding:44px 0}
+.avaliacoes[hidden]{display:none}
+.av-cabeca{text-align:center;max-width:720px;margin:0 auto 24px}
+.av-cabeca .kicker{font-size:11px;font-weight:900;text-transform:uppercase;color:var(--red);letter-spacing:.11em}
+.av-cabeca h2{font-size:clamp(25px,6.2vw,34px);line-height:1.12;letter-spacing:-.015em;margin:9px 0 0}
+.av-resumo{
+  display:flex;flex-direction:column;gap:18px;align-items:center;
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;margin-bottom:20px
+}
+.av-nota{text-align:center;flex:0 0 auto}
+.av-nota b{display:block;font-size:46px;font-weight:900;line-height:1;letter-spacing:-.04em;color:var(--pine)}
+.av-nota .av-estrelas{font-size:19px;margin:5px 0 3px}
+.av-nota small{font-size:12.5px;color:var(--muted);font-weight:700}
+.av-estrelas{color:var(--gold);letter-spacing:2px;line-height:1}
+.av-barras{width:100%;max-width:340px;display:grid;gap:6px}
+.av-barra{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:800;color:var(--muted)}
+.av-barra .lab{width:26px;flex:0 0 26px}
+.av-barra .trilho{flex:1;height:7px;background:var(--mint);border-radius:99px;overflow:hidden}
+.av-barra .cheio{height:100%;background:linear-gradient(90deg,var(--pine-2),var(--gold));border-radius:99px}
+.av-barra .num{width:22px;text-align:right;flex:0 0 22px}
+.av-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.av-card{
+  background:#fff;border:1px solid var(--border);border-radius:16px;
+  padding:16px;box-shadow:0 4px 14px rgba(15,61,42,.05)
+}
+.av-card[hidden]{display:none}
+.av-top{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.av-avatar{
+  width:38px;height:38px;flex:0 0 38px;border-radius:50%;
+  background:var(--pine);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:15px;text-transform:uppercase
+}
+.av-quem{flex:1;min-width:0;line-height:1.3}
+.av-nome{display:block;font-size:13.5px;font-weight:900}
+.av-selo{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:var(--green-ok)}
+.av-data{font-size:11.5px;color:var(--muted);font-weight:700;white-space:nowrap}
+.av-card .av-estrelas{font-size:14px;margin-bottom:8px}
+.av-texto{font-size:14.5px;margin:0;line-height:1.5}
+.av-midia{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.av-thumb{
+  width:66px;height:66px;padding:0;position:relative;flex:0 0 66px;
+  border:1px solid var(--border);border-radius:11px;overflow:hidden;
+  background:var(--bg);cursor:pointer;appearance:none;-webkit-appearance:none
+}
+.av-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.av-play{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(11,34,25,.35)
+}
+.av-play span{
+  width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.94);
+  color:var(--red);display:flex;align-items:center;justify-content:center;
+  font-size:11px;padding-left:2px;font-weight:900
+}
+.av-mais{
+  display:block;width:100%;margin-top:18px;min-height:52px;
+  border:1.5px solid var(--pine);background:#fff;border-radius:14px;
+  color:var(--pine);font-weight:900;font-size:15px;cursor:pointer;
+  appearance:none;-webkit-appearance:none
+}
+.av-mais:active{background:var(--mint)}
+.av-mais[hidden]{display:none}
+
+/* visor de foto/video em tela cheia */
+.visor{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(7,23,16,.94);
+  display:flex;align-items:center;justify-content:center;
+  padding:calc(58px + env(safe-area-inset-top,0px)) 16px calc(44px + env(safe-area-inset-bottom,0px));
+  opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease
+}
+.visor.aberto{opacity:1;visibility:visible}
+.visor img,.visor video{max-width:100%;max-height:100%;border-radius:14px;object-fit:contain;background:#000}
+.visor-fechar,.visor-nav{
+  position:absolute;border:0;border-radius:50%;
+  background:rgba(255,255,255,.16);color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  appearance:none;-webkit-appearance:none
+}
+.visor-fechar{top:calc(12px + env(safe-area-inset-top,0px));right:14px;width:44px;height:44px;font-size:19px}
+.visor-nav{top:50%;transform:translateY(-50%);width:46px;height:46px;font-size:20px}
+.visor-ant{left:10px}
+.visor-prox{right:10px}
+.visor-conta{
+  position:absolute;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:0;right:0;
+  text-align:center;color:#fff;font-size:12.5px;font-weight:800;opacity:.85
+}
+
+/* --- Rodape --------------------------------------------------- */
+footer{background:#071710;color:#9fb3a7;padding:30px 0;font-size:12.5px;border-top:3px solid var(--gold)}
+.footer-inner{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.footer-inner img{height:96px;width:auto}
+.footer-txt{display:flex;flex-direction:column;gap:7px}
+.footer-txt a{color:#e4efe8;font-weight:700}
+
+/* --- Barra fixa (verde, igual à da landing) -------------------- */
+.sticky-mobile{
+  display:flex;position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,.95);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-top:1px solid var(--border);
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  gap:12px;align-items:center;
+  box-shadow:0 -6px 24px rgba(15,61,42,.10)
+}
+.sticky-price{min-width:92px;line-height:1.15}
+.sticky-price b{display:block;font-size:19px;font-weight:900;letter-spacing:-.02em}
+.sticky-price span{font-size:11px;color:var(--muted)}
+.sticky-mobile .cta{min-height:50px;padding:13px 12px;font-size:14px;white-space:nowrap}
+
+/* ============================================================
+   TABLET / DESKTOP
+   ============================================================ */
+@media (min-width:700px){
+  .wrap{padding:0 28px}
+  .logo{height:76px}
+  .av-grid{grid-template-columns:1fr 1fr}
+  .av-resumo{flex-direction:row;justify-content:center;gap:40px;padding:26px}
+  .selos{grid-template-columns:repeat(4,1fr)}
+  .selo{border-right:1px solid var(--border)}
+  .selo:nth-child(-n+2){border-bottom:0}
+  .selo:last-child{border-right:0}
+  .footer-inner{flex-direction:row;justify-content:space-between;text-align:left}
+}
+
+@media (min-width:1000px){
+  body{padding-bottom:0}
+  html{scroll-padding-top:148px}
+  .sticky-mobile{display:none}
+  .logo{height:104px}
+  .produto-grid{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:48px;align-items:start;padding:56px 28px 60px
+  }
+  /* fica parada ao lado enquanto rola o bloco de compra, abaixo do topo fixo */
+  .galeria{padding:0;position:sticky;top:150px}
+  .compra{padding:0}
+  .galeria-principal{padding:16px;border-radius:28px}
+  .galeria-principal img{border-radius:20px}
+  h1{font-size:40px}
+  .detalhes{max-width:860px;margin:0 auto}
+  .avaliacoes{padding:70px 0}
+  .av-grid{grid-template-columns:repeat(3,1fr)}
+  .av-mais{max-width:340px;margin-left:auto;margin-right:auto}
+}
+
+@media (min-width:880px){
+  .desc-bloco{grid-template-columns:1fr 1fr}
+  .desc-bloco .desc-texto{order:1;padding:60px 52px}
+  .desc-bloco .desc-img{order:2}
+  .desc-bloco.inverso .desc-img{order:1}
+  .desc-bloco.inverso .desc-texto{order:2}
+  .desc-texto h3{font-size:32px}
+  .desc-lista li{font-size:16.5px}
+}
+</style>
+</head>
+<body>
+
+<div class="announcement">🎄 <span id="faltam"></span><b>Frete grátis</b><span class="so-desk"> para todo o Brasil</span></div>
+
+<header class="brandbar">
+  <a href="/" aria-label="Página inicial">
+    <img class="logo" src="./img/logo-encanto.webp" alt="Encanto de Natal" width="238" height="300">
+  </a>
+  <button type="button" class="carrinho-btn" onclick="abrirCarrinho()" aria-label="Abrir sacola">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M4.2 8h15.6l-1.25 11.6a2.2 2.2 0 0 1-2.19 1.9H7.64a2.2 2.2 0 0 1-2.19-1.9z"/>
+      <path d="M8.6 8V6.4a3.4 3.4 0 0 1 6.8 0V8"/>
+    </svg>
+    <span class="carrinho-contador" id="cartContador" hidden>0</span>
+  </button>
+  <div class="piscas" aria-hidden="true"></div>
+</header>
+
+<main class="wrap produto-grid">
+
+  <!-- ===== GALERIA ===== -->
+  <div class="galeria">
+    <div class="galeria-principal">
+      <span class="selo-desconto" id="seloDesconto">R$ 50,00 OFF</span>
+      <span class="selo-bf" aria-label="Oferta de Black Friday">BLACK <b>FRIDAY</b></span>
+      <img id="fotoPrincipal" src="./img/galeria-projecao-sala.webp" alt="Luminária Encanto de Natal Premium acesa na tomada da sala, projetando Papai Noel, renas, presentes, estrelas e flocos de neve no teto" width="900" height="1124" fetchpriority="high">
+    </div>
+    <div class="miniaturas" id="miniaturas">
+      <button type="button" class="mini ativa" onclick="trocarFoto(this,'./img/galeria-projecao-sala.webp')" aria-label="Foto 1: projeção no teto">
+        <img src="./img/galeria-projecao-sala.webp" alt="" loading="lazy">
+      </button>
+      <button type="button" class="mini" onclick="trocarFoto(this,'./img/galeria-detalhes.webp')" aria-label="Foto 2: detalhes">
+        <img src="./img/galeria-detalhes.webp" alt="" loading="lazy">
+      </button>
+      <button type="button" class="mini" onclick="trocarFoto(this,'./img/galeria-maos-acesa.webp')" aria-label="Foto 3: luzinhas acesas">
+        <img src="./img/galeria-maos-acesa.webp" alt="" loading="lazy">
+      </button>
+      <button type="button" class="mini" onclick="trocarFoto(this,'./img/galeria-maos-caixa.webp')" aria-label="Foto 4: o produto">
+        <img src="./img/galeria-maos-caixa.webp" alt="" loading="lazy">
+      </button>
+      <button type="button" class="mini" onclick="trocarFoto(this,'./img/galeria-caixa-vermelha.webp')" aria-label="Foto 5: caixa de presente">
+        <img src="./img/galeria-caixa-vermelha.webp" alt="" loading="lazy">
+      </button>
+      <button type="button" class="mini" onclick="trocarFoto(this,'./img/galeria-embalagem.webp')" aria-label="Foto 6: embalagem">
+        <img src="./img/galeria-embalagem.webp" alt="" loading="lazy">
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== COMPRA ===== -->
+  <div class="compra">
+    <div class="categoria">Encanto de Natal</div>
+    <h1>Luminária Encanto de Natal Premium · Projetor com Luzes LED</h1>
+
+    <!-- aparece sozinho quando houver avaliações reais -->
+    <div class="avaliacao" id="avaliacaoTopo" hidden>
+      <span class="estrelas">★★★★★</span>
+      <a href="#avaliacoes"><span id="avResumoTopo"></span></a>
+    </div>
+
+    <p class="resumo-curto">Encaixe, apague a luz e o teto vira um céu de Natal: Papai Noel, árvores, estrelas e flocos de neve pela casa.</p>
+
+    <div class="preco-bloco">
+      <div class="price-line">
+        <span class="price" id="preco">R$ 89,90</span>
+        <span class="old" id="precoAntigo">R$ 139,90</span>
+        <span class="discount" id="badgeDesconto">ECONOMIZE R$ 50,00</span>
+      </div>
+      <div class="parcela" id="parcela">Frete grátis para todo o Brasil</div>
+      <div class="aviso-natal">🎅 Peça com antecedência para receber antes do Natal</div>
+    </div>
+
+    <!-- modelo: escondido enquanto houver um modelo só em js/loja.js -->
+    <div class="grupo" id="grupoModelo" hidden>
+      <div class="grupo-titulo">Modelo: <em id="corEscolhida"></em></div>
+      <div class="cores" id="cores"></div>
+    </div>
+
+    <!-- quantidade -->
+    <div class="grupo">
+      <div class="grupo-titulo">Quantidade</div>
+      <div class="qtd-linha">
+        <div class="stepper">
+          <button type="button" class="step" id="btnMenos" onclick="mudarQtd(-1)" aria-label="Diminuir quantidade">−</button>
+          <input class="step-input" id="qtd" type="number" min="1" max="99" step="1" value="1"
+                 inputmode="numeric" aria-label="Quantidade"
+                 oninput="aplicarQtd(this.value)" onchange="aplicarQtd(this.value, true)">
+          <button type="button" class="step" onclick="mudarQtd(1)" aria-label="Aumentar quantidade">+</button>
+        </div>
+        <div class="qtd-resumo">
+          <b id="qtdUnit">R$ 89,90 cada</b>
+          <span id="qtdEconomia">&nbsp;</span>
+        </div>
+      </div>
+      <p class="qtd-dica" id="qtdDica"></p>
+    </div>
+
+    <button type="button" class="cta" onclick="adicionarAoCarrinho()">ADICIONAR À SACOLA <span class="cta-seta" aria-hidden="true">→</span></button>
+
+    <div class="micro">
+      <span>🔒 Compra segura</span>
+      <span>🚚 Frete grátis</span>
+      <span>📦 Pedido monitorado</span>
+    </div>
+
+    <div class="selos">
+      <div class="selo"><b>🚚 Frete grátis</b><span>Para todo o Brasil</span></div>
+      <div class="selo"><b>📦 Monitorado</b><span>Do envio à entrega</span></div>
+      <div class="selo"><b>🔒 Pagamento seguro</b><span>Ambiente protegido</span></div>
+      <div class="selo"><b>🎁 Pronto pra presente</b><span>Já vem na caixinha</span></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ===== DESCRICAO VISUAL (blocos alternados) ===== -->
+<section class="descricao">
+
+  <div class="desc-bloco">
+    <div class="desc-texto">
+      <h3>Esqueça o pisca-pisca embolado: <em>um encaixe</em> e a casa inteira vira Natal!</h3>
+      <p class="desc-sub">Apague a luz e veja o teto e as paredes se encherem de Papai Noel, renas, estrelas e flocos de neve.</p>
+    </div>
+    <div class="desc-img">
+      <img src="./img/familia-encantada.webp" alt="Família sob uma tenda iluminada por projeções de Natal" width="576" height="720" loading="lazy" decoding="async">
+    </div>
+  </div>
+
+  <div class="desc-bloco inverso">
+    <div class="desc-img">
+      <img src="./img/arvore-acesa.webp" alt="Luminária Encanto de Natal Premium acesa na parede, com luzinhas LED" width="576" height="720" loading="lazy" decoding="async">
+    </div>
+    <div class="desc-texto">
+      <h3>Linda de dia, <em>mágica</em> à noite!</h3>
+      <ul class="desc-lista">
+        <li><b>✔</b>Projeta Papai Noel, árvores, renas, estrelas e neve</li>
+        <li><b>✔</b>Luzinhas LED na árvore e na guirlanda</li>
+        <li><b>✔</b>Sem montagem: tira da caixa e conecta</li>
+        <li><b>✔</b>Sala, quarto, cozinha ou mesa da ceia</li>
+        <li><b>✔</b>Vem em caixa temática de Natal</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="desc-bloco">
+    <div class="desc-texto">
+      <h3>O presente que <em>encanta</em> a família inteira!</h3>
+      <ul class="desc-lista">
+        <li><b>✔</b>Perfeito para amigo-secreto e para os avós</li>
+        <li><b>✔</b>A criançada adora ver o teto “ganhar vida”</li>
+        <li><b>✔</b>Compacta e fácil de guardar até o próximo Natal</li>
+        <li><b>✔</b>Vem em caixa temática, pronta para presentear</li>
+      </ul>
+    </div>
+    <div class="desc-img">
+      <img src="./img/cozinha-teto.webp" alt="Teto da cozinha coberto de projeções de Natal" width="576" height="768" loading="lazy" decoding="async">
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== DETALHES ===== -->
+<!-- CONFIRA as especificações com o fornecedor antes de publicar. -->
+<div class="wrap detalhes">
+  <details open>
+    <summary>Especificações</summary>
+    <div class="det-corpo">
+      <div class="det-lista">
+        <div class="det-item"><b>Formato</b><span>Árvore de Natal com guirlanda</span></div>
+        <div class="det-item"><b>Iluminação</b><span>Luzinhas LED + projeção</span></div>
+        <div class="det-item"><b>Projeções</b><span>Papai Noel, árvores, renas, presentes, estrelas e neve</span></div>
+        <div class="det-item"><b>Conexão</b><span>Conector USB</span></div>
+        <div class="det-item"><b>Acabamento</b><span>Folhagem verde, bolinhas vermelhas e estrela dourada</span></div>
+        <div class="det-item"><b>Indicada para</b><span>Ambientes internos</span></div>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Entrega e devolução</summary>
+    <div class="det-corpo">
+      <p>Frete grátis para todo o Brasil, com pedido monitorado do envio até a entrega. O prazo para o seu CEP aparece na finalização do pedido.</p>
+      <p>Perto do Natal a procura aumenta: para garantir a entrega a tempo, faça o pedido com antecedência.</p>
+      <p>Caso o produto chegue com algum problema, entre em contato para combinarmos a troca ou devolução.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Dúvidas frequentes</summary>
+    <div class="det-corpo">
+      <p><b>Como funciona a projeção?</b><br>Ao conectar a árvore, as luzinhas acendem e a projeção é lançada no ambiente. Com a luz do cômodo apagada, os desenhos aparecem no teto e nas paredes. Quanto mais escuro, mais nítido.</p>
+      <p><b>Precisa de pilha?</b><br>Não. A peça tem conector USB: basta ligar em um carregador USB de tomada ou outra fonte USB.</p>
+      <p><b>Precisa montar?</b><br>Não. Ela já vem pronta, com as bolinhas e as luzinhas no lugar.</p>
+      <p><b>Serve para presente?</b><br>Sim! Vem em caixa temática de Natal.</p>
+    </div>
+  </details>
+</div>
+
+<!-- ===== AVALIAÇÕES (escondida até existirem avaliações reais) ===== -->
+<section class="avaliacoes" id="avaliacoes" hidden>
+  <div class="wrap">
+    <div class="av-cabeca">
+      <div class="kicker">Quem já comprou</div>
+      <h2>O que os clientes estão dizendo</h2>
+    </div>
+    <div class="av-resumo">
+      <div class="av-nota">
+        <b id="avMedia"></b>
+        <div class="av-estrelas">★★★★★</div>
+        <small id="avTotal"></small>
+      </div>
+      <div class="av-barras" id="avBarras"></div>
+    </div>
+    <div class="av-grid" id="avGrid"></div>
+    <button type="button" class="av-mais" id="avMais" onclick="verTodasAvaliacoes()"></button>
+  </div>
+</section>
+
+<!-- visor de foto/vídeo -->
+<div class="visor" id="visor" onclick="fecharVisor(event)">
+  <button type="button" class="visor-fechar" onclick="fecharVisor()" aria-label="Fechar">✕</button>
+  <button type="button" class="visor-nav visor-ant" onclick="navegarVisor(event,-1)" aria-label="Anterior">‹</button>
+  <div id="visorAlvo"></div>
+  <button type="button" class="visor-nav visor-prox" onclick="navegarVisor(event,1)" aria-label="Próxima">›</button>
+  <div class="visor-conta" id="visorConta"></div>
+</div>
+
+<footer>
+  <div class="wrap footer-inner">
+    <img src="./img/logo-encanto.webp" alt="Encanto de Natal" width="238" height="300" loading="lazy">
+    <div class="footer-txt">
+      <span>© Encanto de Natal · Todos os direitos reservados</span>
+      <!-- troque pelo e-mail de suporte desta loja -->
+      <a href="mailto:suporte@sualoja.com">Suporte: suporte@sualoja.com</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== BARRA FIXA ===== -->
+<div class="sticky-mobile">
+  <div class="sticky-price">
+    <b id="stickyPreco">R$ 89,90</b>
+    <span id="stickyResumo">1 unidade</span>
+  </div>
+  <button type="button" class="cta" onclick="adicionarAoCarrinho()">ADICIONAR À SACOLA <span class="cta-seta" aria-hidden="true">→</span></button>
+</div>
+
+<!-- preços, modelos e sacola ficam em um arquivo só, compartilhado com a landing e o checkout -->
+<script src="./js/pixel.js"></script>
+<script src="./js/loja.js"></script>
+<script src="./js/enfeites.js"></script>
+<script src="./js/sacola.js"></script>
+<script>
+var corAtual = COR_PADRAO;
+var qtdAtual = 1;
+
+function trocarFoto(botao, src){
+  var foto = document.getElementById("fotoPrincipal");
+  foto.src = src;
+  /* descrição para leitor de tela acompanha a foto escolhida */
+  foto.alt = "Luminária Encanto de Natal Premium: " + (botao.getAttribute("aria-label") || "").replace(/^Foto \d+:\s*/, "");
+  document.querySelectorAll(".mini").forEach(function(b){
+    b.classList.toggle("ativa", b === botao);
+  });
+}
+
+/* Seletor de modelo: só aparece com mais de um modelo em js/loja.js. */
+function montarModelos(){
+  var nomes = Object.keys(CORES_HEX);
+  if (nomes.length < 2) return;
+  var html = "";
+  nomes.forEach(function(nome){
+    html +=
+      '<button type="button" class="cor' + (nome === corAtual ? " ativa" : "") + '" ' +
+        'data-cor="' + nome + '" onclick="escolherCor(this)">' +
+        '<span class="cor-bola" style="background:' + CORES_HEX[nome] + '"></span>' +
+        '<span class="cor-nome">' + nome + '</span>' +
+      '</button>';
+  });
+  document.getElementById("cores").innerHTML = html;
+  document.getElementById("corEscolhida").textContent = corAtual;
+  document.getElementById("grupoModelo").hidden = false;
+}
+
+function escolherCor(botao){
+  corAtual = botao.getAttribute("data-cor");
+  document.getElementById("corEscolhida").textContent = corAtual;
+  document.querySelectorAll(".cor").forEach(function(b){
+    b.classList.toggle("ativa", b === botao);
+  });
+  atualizarResumo();
+}
+
+/* Dica das faixas de preço, montada a partir da tabela do
+   js/loja.js: mudou o preço lá, a frase acompanha. */
+function montarDica(){
+  var dica = document.getElementById("qtdDica");
+  if (!temDescontoPorQuantidade()){
+    dica.innerHTML = "🎁 Uma para casa, outras para presentear: leve mais de uma e resolva os presentes de Natal.";
+    return;
+  }
+  var partes = [];
+  Object.keys(TOTAIS).map(Number).sort(function(a,b){ return a - b; }).forEach(function(q){
+    if (q > 1) partes.push("<b>" + q + " un.</b> por " + brl(TOTAIS[q]));
+  });
+  var acima = Math.max.apply(null, Object.keys(TOTAIS).map(Number)) + 1;
+  partes.push("<b>" + acima + " ou mais</b> por apenas " + brl(UNIT_ACIMA) + " cada");
+  dica.innerHTML = "🎁 Uma para casa, outras para presentear: leve " + partes.join(" · ");
+}
+
+function mudarQtd(passo){
+  aplicarQtd(qtdAtual + passo, true);
+}
+
+/* corrigir = true ajusta o campo quando o valor e invalido.
+   Enquanto a pessoa digita (corrigir = false) o campo nao e mexido,
+   senao apagar o numero para redigitar fica impossivel. */
+function aplicarQtd(valor, corrigir){
+  var campo = document.getElementById("qtd");
+  var q = parseInt(valor, 10);
+
+  if (isNaN(q) || q < 1){
+    if (!corrigir) return;
+    q = 1;
+  }
+  if (q > QTD_MAX) q = QTD_MAX;
+
+  qtdAtual = q;
+  if (campo.value !== String(q)) campo.value = q;
+  document.getElementById("btnMenos").disabled = (q <= 1);
+
+  var total    = precoTotal(q);
+  var unit     = total / q;
+  var cheio    = PRECO_CHEIO * q;
+  var economia = cheio - total;
+
+  var comDesconto = temDesconto(q);
+
+  document.getElementById("preco").textContent         = brl(total);
+  document.getElementById("precoAntigo").textContent   = brl(cheio);
+  document.getElementById("badgeDesconto").textContent = "ECONOMIZE " + brl(economia);
+  document.getElementById("seloDesconto").textContent  = brl(economia) + " OFF";
+  /* sem desconto real: some riscado, selos e "economia" */
+  document.getElementById("precoAntigo").hidden   = !comDesconto;
+  document.getElementById("badgeDesconto").hidden = !comDesconto;
+  document.getElementById("seloDesconto").hidden  = !comDesconto;
+  document.getElementById("qtdUnit").textContent       = brl(unit) + " cada";
+  document.getElementById("qtdEconomia").innerHTML     = comDesconto ? "Economia de " + brl(economia) : "&nbsp;";
+  document.getElementById("stickyPreco").textContent   = brl(total);
+
+  atualizarResumo();
+}
+
+function atualizarResumo(){
+  var temModelos = Object.keys(CORES_HEX).length > 1;
+  document.getElementById("stickyResumo").textContent =
+    (temModelos ? corAtual + " · " : "") + qtdAtual + (qtdAtual > 1 ? " unidades" : " unidade");
+}
+
+/* Sacola: toda a lógica fica em js/sacola.js (compartilhada com a landing). */
+function adicionarAoCarrinho(){
+  adicionarNaSacola(corAtual, qtdAtual);
+}
+
+/* ============================================================
+   AVALIAÇÕES
+   Coloque aqui SOMENTE avaliações reais de clientes deste
+   produto (texto como o cliente escreveu). Enquanto a lista
+   estiver vazia, a seção e a nota do topo ficam escondidas.
+   Formato:
+   { nome:"m*****a", nota:5, data:"20/12/2026",
+     texto:"...", fotos:["av1-f1.jpg"], video:"av1.mp4" }
+   Fotos em ./img/avaliacoes/ e vídeos em ./video/
+   ============================================================ */
+var AVALIACOES = [];
+
+var AV_INICIAIS = 6;
+var avExpandido = false;
+var visorLista = [];
+var visorIndice = 0;
+
+function estrelas(n){
+  return "★★★★★".slice(0, n) + "☆☆☆☆☆".slice(0, 5 - n);
+}
+
+function renderAvaliacoes(){
+  var total = AVALIACOES.length;
+  if (total === 0) return;               /* sem avaliações reais: nada aparece */
+
+  document.getElementById("avaliacoes").hidden = false;
+  document.getElementById("avaliacaoTopo").hidden = false;
+
+  var soma = AVALIACOES.reduce(function(s,a){ return s + a.nota; }, 0);
+  var media = (soma / total).toFixed(1).replace(".", ",");
+  var rotulo = total + (total > 1 ? " avaliações" : " avaliação");
+  document.getElementById("avMedia").textContent = media;
+  document.getElementById("avTotal").textContent = rotulo;
+  document.getElementById("avResumoTopo").textContent = media + " · " + rotulo;
+
+  var barras = "";
+  for (var n = 5; n >= 1; n--){
+    var qtd = AVALIACOES.filter(function(a){ return a.nota === n; }).length;
+    var pct = Math.round(qtd / total * 100);
+    barras +=
+      '<div class="av-barra">' +
+        '<span class="lab">' + n + '★</span>' +
+        '<span class="trilho"><span class="cheio" style="width:' + pct + '%"></span></span>' +
+        '<span class="num">' + qtd + '</span>' +
+      '</div>';
+  }
+  document.getElementById("avBarras").innerHTML = barras;
+
+  var html = "";
+  AVALIACOES.forEach(function(a, i){
+    var escondido = (!avExpandido && i >= AV_INICIAIS) ? " hidden" : "";
+    var fotos = a.fotos || [];
+    var midia = "";
+    if (a.video && fotos.length){
+      midia +=
+        '<button type="button" class="av-thumb" onclick="abrirVisor(' + i + ',0)" aria-label="Ver vídeo">' +
+          '<img src="./img/avaliacoes/' + fotos[0] + '" alt="" loading="lazy">' +
+          '<span class="av-play"><span>▶</span></span>' +
+        '</button>';
+    }
+    fotos.forEach(function(f, fi){
+      var idx = a.video ? fi + 1 : fi;
+      midia +=
+        '<button type="button" class="av-thumb" onclick="abrirVisor(' + i + ',' + idx + ')" aria-label="Ver foto">' +
+          '<img src="./img/avaliacoes/' + f + '" alt="Foto enviada pelo cliente" loading="lazy">' +
+        '</button>';
+    });
+
+    html +=
+      '<article class="av-card"' + escondido + '>' +
+        '<div class="av-top">' +
+          '<span class="av-avatar">' + a.nome.charAt(0) + '</span>' +
+          '<span class="av-quem">' +
+            '<span class="av-nome">' + a.nome + '</span>' +
+            '<span class="av-selo">✓ Compra verificada</span>' +
+          '</span>' +
+          '<span class="av-data">' + a.data + '</span>' +
+        '</div>' +
+        '<div class="av-estrelas">' + estrelas(a.nota) + '</div>' +
+        '<p class="av-texto">' + a.texto + '</p>' +
+        (midia ? '<div class="av-midia">' + midia + '</div>' : '') +
+      '</article>';
+  });
+  document.getElementById("avGrid").innerHTML = html;
+
+  var botao = document.getElementById("avMais");
+  if (total <= AV_INICIAIS){
+    botao.hidden = true;
+  } else {
+    botao.hidden = false;
+    botao.textContent = avExpandido ? "Mostrar menos" : "Ver todas as " + total + " avaliações";
+  }
+}
+
+function verTodasAvaliacoes(){
+  avExpandido = !avExpandido;
+  renderAvaliacoes();
+  if (!avExpandido){
+    document.getElementById("avaliacoes").scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+}
+
+function abrirVisor(iAval, iMidia){
+  var a = AVALIACOES[iAval];
+  visorLista = [];
+  if (a.video) visorLista.push({ tipo:"video", src:"./video/" + a.video });
+  (a.fotos || []).forEach(function(f){
+    visorLista.push({ tipo:"foto", src:"./img/avaliacoes/" + f });
+  });
+  visorIndice = iMidia;
+  mostrarVisor();
+  document.getElementById("visor").classList.add("aberto");
+  document.body.style.overflow = "hidden";
+}
+
+function mostrarVisor(){
+  var m = visorLista[visorIndice];
+  document.getElementById("visorAlvo").innerHTML = m.tipo === "video"
+    ? '<video src="' + m.src + '" controls autoplay playsinline preload="metadata"></video>'
+    : '<img src="' + m.src + '" alt="Foto enviada pelo cliente">';
+  document.getElementById("visorConta").textContent = (visorIndice + 1) + " de " + visorLista.length;
+}
+
+function navegarVisor(e, passo){
+  if (e) e.stopPropagation();
+  visorIndice = (visorIndice + passo + visorLista.length) % visorLista.length;
+  mostrarVisor();
+}
+
+function fecharVisor(e){
+  if (e && e.target.closest && e.target.closest("#visorAlvo")) return;
+  document.getElementById("visor").classList.remove("aberto");
+  document.getElementById("visorAlvo").innerHTML = "";
+  document.body.style.overflow = "";
+}
+
+document.addEventListener("keydown", function(e){
+  var visorAberto = document.getElementById("visor").classList.contains("aberto");
+  if (e.key === "Escape"){
+    if (visorAberto) fecharVisor(); else fecharCarrinho();
+  }
+  if (visorAberto && e.key === "ArrowLeft")  navegarVisor(null, -1);
+  if (visorAberto && e.key === "ArrowRight") navegarVisor(null, 1);
+});
+
+document.addEventListener("DOMContentLoaded", function(){
+  montarModelos();
+  montarDica();
+  aplicarQtd(1, true);
+  renderAvaliacoes();
+
+  /* ViewContent: quem abriu a página do produto. É deste público
+     que o Meta monta o remarketing. */
+  if (typeof pixelVerProduto === "function"){
+    pixelVerProduto(PRODUTO_NOME, precoTotal(1));
+  }
+});
+</script>
+
+</body>
+</html>

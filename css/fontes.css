@@ -1,0 +1,20 @@
+/* ============================================================
+   ENCANTO DE NATAL — fonte dos títulos
+   Playfair Display (SIL Open Font License, uso comercial livre —
+   licença em fonts/LICENSE.txt). Arquivos ficam na própria pasta
+   do site: nada é carregado de servidor externo.
+   Só os pesos usados: 600 normal e 600 itálico (~46 KB no total).
+   font-display:swap = o texto aparece na hora com a fonte reserva
+   e troca quando a Playfair termina de carregar.
+   ============================================================ */
+
+@font-face{
+  font-family:"Playfair Display";
+  font-style:normal;font-weight:600;font-display:swap;
+  src:url("../fonts/playfair-display-latin-600-normal.woff2") format("woff2");
+}
+@font-face{
+  font-family:"Playfair Display";
+  font-style:italic;font-weight:600;font-display:swap;
+  src:url("../fonts/playfair-display-latin-600-italic.woff2") format("woff2");
+}
