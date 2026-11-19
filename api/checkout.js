@@ -1,11 +1,11 @@
 /* ============================================================
-   POST /api/checkout — cria o pedido e o Pix na Shopix
+   POST /api/checkout — cria o pedido e o Pix na BravoPay
    Recebe do checkout.html: itens, bumps, cliente, endereco, meta, utm.
    Devolve: { ok, pedido:{numero}, total (centavos), pix:{emv, img, expiraEm} }
    ============================================================ */
 const crypto = require("crypto");
 const { calcularPedido, PedidoInvalido } = require("./_loja");
-const { criarPix } = require("./_shopix");
+const { criarPix } = require("./_bravopay");
 
 const EXPIRA_SEGUNDOS = 30 * 60;   /* 30 min para pagar */
 
@@ -46,14 +46,14 @@ function validarCliente(c, e){
   return { cliente, endereco };
 }
 
-/* Número curto e único: vira o externalId na Shopix e é o que o
+/* Número curto e único: vira o external_reference na BravoPay e é o que o
    cliente vê. Ex.: NATAL-MH3K9Q-4F2A */
 function novoNumero(){
   return "NATAL-" + Date.now().toString(36).toUpperCase() + "-" +
          crypto.randomBytes(2).toString("hex").toUpperCase();
 }
 
-/* A Shopix não guarda endereço. Sem isto, você não sabe para onde
+/* A BravoPay não guarda endereço. Sem isto, você não sabe para onde
    enviar. Manda o pedido completo para PEDIDOS_WEBHOOK_URL (planilha,
    Make, Zapier...) e sempre deixa uma cópia no log do servidor. */
 async function registrarPedido(pedido){
@@ -65,6 +65,16 @@ async function registrarPedido(pedido){
   } catch(e){
     console.error("[pedido] falha ao enviar para PEDIDOS_WEBHOOK_URL:", e.message);
   }
+}
+
+/* A BravoPay aceita utm como texto chave→valor. */
+function utmLimpo(u){
+  if (!u || typeof u !== "object") return undefined;
+  const o = {};
+  Object.keys(u).slice(0, 10).forEach(function(k){
+    if (u[k] != null && u[k] !== "") o[texto(k, 40)] = texto(u[k], 200);
+  });
+  return Object.keys(o).length ? o : undefined;
 }
 
 module.exports = async function handler(req, res){
@@ -100,22 +110,22 @@ module.exports = async function handler(req, res){
       descricao: "Encanto de Natal · Pedido " + numero,
       externalId: numero,
       expiraEmSegundos: EXPIRA_SEGUNDOS,
-      cliente: dados.cliente
+      cliente: dados.cliente,
+      utm: utmLimpo(corpo.utm)
     });
   } catch(e){
-    console.error("[checkout] falha ao falar com a Shopix:", e.message);
+    console.error("[checkout] falha ao falar com a BravoPay:", e.message);
     return res.status(502).json({ ok:false, erro:"Não foi possível gerar o Pix agora. Tente novamente em instantes." });
   }
 
-  const d = r.dados || {};
-  if (!r.ok || !d.pixCode){
-    console.error("[checkout] Shopix recusou:", r.http, JSON.stringify(d));
+  if (!r.ok){
+    console.error("[checkout] BravoPay recusou:", r.http, JSON.stringify(r.dados));
     return res.status(502).json({ ok:false, erro:"Não foi possível gerar o Pix agora. Tente novamente em instantes." });
   }
 
   await registrarPedido({
     numero: numero,
-    shopixId: d.id || d.transactionId || null,
+    bravopayId: r.id,
     criadoEm: new Date().toISOString(),
     status: "aguardando_pagamento",
     total: calc.total,
@@ -132,9 +142,10 @@ module.exports = async function handler(req, res){
     pedido: { numero: numero },
     total: Math.round(calc.total * 100),          /* centavos, como o checkout espera */
     pix: {
-      emv: d.pixCode,
-      img: d.pixQrCode || null,                   /* data:image/png;base64,... */
-      expiraEm: d.expiresAt || null               /* ISO, ex.: 2026-11-05T23:00:00.000Z */
+      emv: r.emv,
+      img: r.img,                                 /* data:image/png;base64,... ou null */
+      expiraEm: r.expiraEm,                       /* ISO, ex.: 2026-11-05T23:00:00.000Z */
+      gerando: !r.emv                             /* true: o código chega pelo /api/status */
     }
   });
 };

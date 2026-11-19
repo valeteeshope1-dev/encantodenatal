@@ -651,6 +651,8 @@ footer{background:var(--night);color:#b9c7bd;padding:26px 0;font-size:12.5px;mar
   <button type="button" class="cta" onclick="document.getElementById('form').requestSubmit()">FINALIZAR <span class="cta-seta" aria-hidden="true">→</span></button>
 </div>
 
+<!-- desenha o QR Code a partir do Pix copia-e-cola -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="./js/pixel.js"></script>
 <script src="./js/loja.js"></script>
 <script>
@@ -1027,7 +1029,7 @@ function lerCookie(nome){
    quem decide quanto custa é o servidor, em /api/checkout.
 
    O servidor (api/checkout.js) recalcula tudo com o mesmo
-   js/loja.js e cria o Pix na Shopix.
+   js/loja.js e cria o Pix na BravoPay.
    ------------------------------------------------------------- */
 function enviarPedido(){
   eventoCompra = (typeof novoEventId === "function") ? novoEventId() : null;
@@ -1107,25 +1109,16 @@ function trocarDeTela(id){
 }
 
 /* --- Pix ----------------------------------------------------- */
-var pixTimer = null, pixConsulta = null;
+var pixTimer = null, pixConsulta = null, pixMostrado = false, pixDemora = null;
 
 function mostrarPix(resp){
   document.getElementById("pixPedido").textContent = "#" + resp.pedido.numero;
   document.getElementById("pixValor").textContent = brl(resp.total / 100);
-  document.getElementById("pixEmv").textContent = resp.pix.emv;
 
-  /* A Shopix manda a imagem pronta do QR (data:image/png;base64). */
-  var img = document.getElementById("pixQr");
-  if (resp.pix.img){
-    img.src = resp.pix.img;
-    img.hidden = false;
-  } else if (resp.pix.svg){
-    img.src = "data:image/svg+xml;base64," + btoa(resp.pix.svg);
-    img.hidden = false;
-  } else {
-    /* Sem imagem, o copia-e-cola ainda resolve a compra. */
-    img.hidden = true;
-  }
+  /* A BravoPay gera o Pix em segundo plano: às vezes o código só
+     chega alguns segundos depois, pelo /api/status. */
+  if (resp.pix && resp.pix.emv) preencherPix(resp.pix);
+  else pixGerando();
 
   trocarDeTela("telaPix");
 
@@ -1139,13 +1132,57 @@ function mostrarPix(resp){
     pixelPixGerado(resp.total / 100, eventoCompra);
   }
 
-  contagemPix(resp.pix.expiraEm);
   vigiarPagamento(resp.pedido.numero);
+}
+
+/* Enquanto o código não chega. */
+function pixGerando(){
+  document.getElementById("pixQr").hidden = true;
+  document.getElementById("pixEmv").textContent = "Gerando seu código Pix... aguarde alguns segundos.";
+  document.getElementById("pixBtnCopiar").disabled = true;
+  document.getElementById("pixRelogio").textContent = "Gerando o código...";
+  pixDemora = setTimeout(function(){
+    if (!pixMostrado) document.getElementById("pixRelogio").textContent =
+      "Está demorando mais que o normal. Aguarde mais um pouco ou refaça o pedido.";
+  }, 90000);
+}
+
+/* Mostra QR + copia-e-cola e liga o relógio (só uma vez). */
+function preencherPix(pix){
+  if (pixMostrado) return;
+  pixMostrado = true;
+  if (pixDemora) clearTimeout(pixDemora);
+
+  document.getElementById("pixEmv").textContent = pix.emv;
+  document.getElementById("pixBtnCopiar").disabled = false;
+
+  var img = document.getElementById("pixQr");
+  var src = pix.img || qrDoCodigo(pix.emv);
+  if (src){
+    img.src = src;
+    img.hidden = false;
+  } else {
+    /* Sem imagem, o copia-e-cola ainda resolve a compra. */
+    img.hidden = true;
+  }
+
+  contagemPix(pix.expiraEm);
+}
+
+/* Desenha o QR a partir do copia-e-cola (biblioteca qrcode-generator). */
+function qrDoCodigo(emv){
+  try {
+    if (typeof qrcode !== "function") return null;
+    var qr = qrcode(0, "M");
+    qr.addData(emv);
+    qr.make();
+    return qr.createDataURL(8, 2);
+  } catch(e){ return null; }
 }
 
 /* O prazo vem da API a cada pedido — nunca fixe um tempo aqui. */
 function contagemPix(expiraEm){
-  /* Shopix: ISO com fuso ("2026-11-05T23:00:00.000Z").
+  /* BravoPay: ISO com fuso ("2026-11-05T23:00:00.000Z").
      Formato antigo sem fuso ("2026-11-05 20:00:00") = horário de Brasília. */
   var alvo = 0;
   if (expiraEm){
@@ -1187,6 +1224,7 @@ function vigiarPagamento(pedidoId){
       .then(function(r){ return r.json(); })
       .then(function(d){
         if (!d) return;
+        if (d.pix && d.pix.emv) preencherPix(d.pix);
         if (d.pago){
           clearInterval(pixConsulta);
           if (pixTimer) clearInterval(pixTimer);
@@ -1194,7 +1232,14 @@ function vigiarPagamento(pedidoId){
           return;
         }
         /* Expirado ou estornado: não adianta seguir perguntando. */
-        if (d.encerrado) clearInterval(pixConsulta);
+        if (d.encerrado){
+          clearInterval(pixConsulta);
+          if (!pixMostrado){
+            if (pixDemora) clearTimeout(pixDemora);
+            document.getElementById("pixRelogio").textContent = "Não foi possível gerar o Pix. Refaça o pedido.";
+            document.getElementById("pixEspera").hidden = true;
+          }
+        }
       })
       .catch(function(){});
   }, 5000);

@@ -87,6 +87,6 @@ http.createServer(function(req, res){
     fs.createReadStream(f).pipe(res);
   });
 }).listen(PORTA, function(){
-  console.log("Site em http://localhost:" + PORTA + "  (Shopix: " +
-              (process.env.SHOPIX_API_KEY ? "chave carregada" : "SEM CHAVE") + ")");
+  console.log("Site em http://localhost:" + PORTA + "  (BravoPay: " +
+              (process.env.BRAVOPAY_API_KEY ? "chave carregada" : "SEM CHAVE") + ")");
 });
